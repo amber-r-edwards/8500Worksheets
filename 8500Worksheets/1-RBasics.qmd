@@ -44,7 +44,7 @@ The next type of value is a **string**. Strings are lines of text. Sometimes the
 
 (@) Try to create your own string.
 ```{r}
-
+"Amber has brown hair"
 ```
 
 You can't add strings using `+` like you can numbers. But there is a function called `paste()` which concatenates character vectors into one. This function is _very_ useful and one you'll use a lot in a variety of circumstances. Here's what that looks like: 
@@ -55,12 +55,12 @@ paste("Hello", "Clemson Graduate Students")
 
 (@) Try it, add two strings together like the above example. 
 ```{r}
-
+paste("Amber", "lives in Easley, SC")
 ```
 
 (@) Can you explain what happened in 2-3 sentences? 
 
-> 
+> In the same way that adding combines two numbers with +, paste combines two strings of characters. Similar to putting 2 + 4 (even though the order doesn't matter if you're adding numbers), paste("Amber", "lives in Easley, SC") combines two sets of characters into a sentence because I put them into the order I wanted the sentence to have.
 
 The last type are **logical** values like `TRUE` and `FALSE`. (Note that these are all caps.)
 
