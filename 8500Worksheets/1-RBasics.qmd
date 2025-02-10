@@ -28,9 +28,14 @@ Numbers can be used to do arithmetic.
 ```
 
 (@) You try, multiple two numbers. 
-
+```{r}
+5 * 4
+```
 
 (@) Can you multiply two numbers and then divide by the result? 
+```{r}
+(5*4) / 2
+```
 
 The next type of value is a **string**. Strings are lines of text. Sometimes these are referred to as character vectors. To create a string, you add text between two quotation marks. For example: 
 ```{r}
