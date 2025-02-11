@@ -421,7 +421,7 @@ max(gayguides$Year)
 data(BostonWomenVoters)
 head(BostonWomenVoters)
 head(BostonWomenVoters$Occupation, n=10)
-BostonWomenVoters$Date
+#BostonWomenVoters$Date
 max(BostonWomenVoters$Date)
 ```
 
