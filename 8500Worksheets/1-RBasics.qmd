@@ -1,7 +1,7 @@
 ---
 title: 'Worksheet 1: R Basics'
-author: ""
-date: ""
+author: "Amber Edwards"
+date: "February 11, 2025"
 ---
 
 _This is the first in a series of worksheets for History 8500 at Clemson University. The goal of these worksheets is simple: practice, practice, practice. The worksheet introduces concepts and techniques and includes prompts for you to practice in this interactive document. When you are finished, you should change the author name (above), render your document to a pdf, and upload it to canvas. Don't forget to commit your changes as you go and push to github when you finish the worksheet._
@@ -347,7 +347,7 @@ Run `help(package="DigitalMethodsData")` in your console to pull up a list of da
 
 For demonstration purposes we'll use the `gayguides` data here. Pull up the help documentation for this dataset. What does the documentation tell you abou the scope of this dataset? 
 
->
+>The documentation tells me that the scope of the dataset is from Bob Damron's Address Books from 1965-1985, last updated Dec 2022, and that it's all on one data frame with 14 variables and 60698 observations (items within the data frame).
 
 To use a dataset included in this package we first need to load it. We can do so like this:
 
@@ -365,17 +365,19 @@ That gives us the first 6 rows of data. Its really useful if you just want to pe
 
 (@) The default is to print six rows of data. Can you modify the above code to print out the first 10 rows? 
 ```{r}
-
+head(gayguides, n=10)
 ```
 
 (@) Can you find the last 6 rows of data? 
 ```{r}
+tail(gayguides, n=6)
 
+tail(gayguides)
 ```
 
 (@) Reflect on the previous two prompts. How did you figure these out? 
 
->
+> I knew that the argument to set the number of rows would go after listing the name of the dataset within the parenthesis, but to find out the exact syntax I ran ?head() in my console. This brought be to the help page that listed the arguments, where I got "n[]" - which I then assumed was the same for tail().
 
 The `str()` function is another very useful function for understanding a dataset. It compactly displays the internal structure of an R object. 
 ```{r}
@@ -394,28 +396,38 @@ gayguides$title[500]
 
 (@) Break this down. Whats going on here? What do each of the elements of this code mean? (gayguides, $, title, and [500]) 
 
->
+>This code is pulling from gayguides which is the dataset, then to "title" which is the variable (column within the data), and then to the 500th entry within that column. It's similar to a file path where it leads down into the more specific elements but you have to start from the biggest and work through the scaffolding in order to tell it what you're looking for.
 
 (@) The Year variable contains the year (numeric) of each entry. Can you find the earliest year in this dataset? (Using code, don't cheat and use the documentation!)
 ```{r}
 
+#head(gayguides$Year)
+
+#ceiling(gayguides$Year)
+#floor(gayguides$Year)
+
+min(gayguides$Year)
 ```
 
 
 (@) How about the latest year? 
 ```{r}
-
+max(gayguides$Year)
 ```
 
 
 (@) Add another dataset from `DigitalMethodsData`. How many observations are included in this dataset? Run through some of the examples from above to learn about the dataset.
 ```{r}
-
+data(BostonWomenVoters)
+head(BostonWomenVoters)
+head(BostonWomenVoters$Occupation, n=10)
+BostonWomenVoters$Date
+max(BostonWomenVoters$Date)
 ```
 
 (@) What did you learn about the dataset? What can you tell me about it? 
 
->
+> I added BostonWomenVoters - which has one dataframe with 43 variables and 10702 observations. From the head(), I could tell that there are multiple columns lacking input - but I also can see the titles of each column to be able to reference them. From the first 10 entries in the Occupation column, I can tell that there are multiple overlapping/similar entries - telling me that the responses are not from a standardized list. This makes sense given the data coming from women self-reporting their information rather than picking from a list of options, which could cause complications when using this data for visualizations or analysis. You'd most likely want to go through and clean the data - standardizing the entries as much as possible. I also found that the dates could be an issue, knowing the context I know it's 1920 but without the specification in the date it could be misperceived as 2020 - but at least they're in standard format across entries. The max function I used for gayguides to find the latest year also didn't work with these dates, I'm assuming because of the format MM/DD/YYYY versus the years being straightforward as integers YYYY. Depending on what you're using the data for, this might have to be changed as well (or a different way for min/max that I dont' know).
 
 
 
