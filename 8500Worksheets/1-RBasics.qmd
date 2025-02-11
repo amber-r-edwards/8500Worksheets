@@ -325,7 +325,7 @@ What is going on here? Each line within this function (x,y,z) creates a new colu
 
 (@) What is going on in row z? Can you explain the logic here?
 
-> Row Z is taking each value from x (1-5), multiplying it by 2, and then adding the value of y (1 for each line). 
+> Row Z is taking each value from x (1-5), multiplying it by 2, and then adding the value of y (1 for each line). Because z includes the variables x and y, it is dependent on the values you've assigned them to do the calculations. 
 
 
 ## Loading Dataframes from Packages
