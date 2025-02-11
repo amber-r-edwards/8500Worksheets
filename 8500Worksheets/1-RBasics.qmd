@@ -233,7 +233,7 @@ my.numbers * 2
 ```
 (@) Explain in a few sentences, what happened in the code above?
 
->
+>Because my.numbers is a vector that contains multiple numbers, each number is a separate item within the vector. Therefore, when you ask it to multiply the entire variable/vector by 2, it will multiply each number within the vector by 2. It also presents the answer in the order in which they exist, with the same [1] to indicate the first item.
 
 Lets try something slightly different. 
 ```{r}
@@ -241,11 +241,14 @@ my.numbers[3] * 2
 ```
 (@) Explain in a few sentences, what happened in the code above? 
 
->
+> With this one, rather than leaving it as just the name of the variable, the [3] is specifying which item within the variable we want to use. That way, when you ask it to multiply by 2, you only get the answer for the 3rd item within the variable - given with [1] in the result because it is the first (only) in the sample group used.
 
 (@) You try, create a list of five items and store it in a descriptive variable. 
 ```{r}
+SiblingsAges <- c(21, 22, 25, 28, 29)
+SiblingsAges
 
+SiblingsAges[4]
 ```
 
 
