@@ -147,13 +147,13 @@ Whatever you prefer, be consistent and your future self will thank you when your
 (@) You try, create a variable and assign it a number: 
 
 ```{r}
-
+AmbersVariable <- 24
 ```
 
 (@) Can you assign a string to a variable?
 
 ```{r}
-
+AmbersDogs <- "Mort and Moose"
 ```
 
 Once we've assigned a variable we can use that variable to run calculations just like we did with raw numbers.
@@ -175,22 +175,30 @@ My.Calculation <- (x + x)*10
 
 (@) You try. Assign a number to x and a number to y. Add those two numbers together.
 ```{r}
-
+x <- 20
+y <- 30
+x + y 
 ```
 
 (@) Can you take `x` and `y` and multiply the result by 5? 
 ```{r}
-
+(x + y)*5
 ```
 
 (@) Try creating two variables with names other than `x ` and `y`. Descriptive names tend to be more useful. Can you multiply the contents of your variables? 
 ```{r}
+CalebAge <- 25
+AmberAge <- 24
 
+CalebAge * AmberAge
 ```
 
 (@) Try creating two variables that store strings. Can you concatenate those two variables together? 
 ```{r}
+FavCandy <- "dark chocolate"
+FavFlower <- "roses or tulips"
 
+paste(FavFlower, FavCandy)
 ```
 
 ### Vectors
