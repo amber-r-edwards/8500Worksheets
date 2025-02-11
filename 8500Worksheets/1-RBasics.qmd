@@ -60,7 +60,7 @@ paste("Amber", "lives in Easley, SC")
 
 (@) Can you explain what happened in 2-3 sentences? 
 
-> In the same way that adding combines two numbers with +, paste combines two strings of characters. Similar to putting 2 + 4 (even though the order doesn't matter if you're adding numbers), paste("Amber", "lives in Easley, SC") combines two sets of characters into a sentence because I put them into the order I wanted the sentence to have.
+> In the same way that adding combines two numbers with +, paste combines two strings of characters. Similar to putting 2 + 4 (even though the order doesn't matter if you're adding numbers), paste("Amber", "lives in Easley, SC") combines two sets of characters into a sentence by adding them together (I put them into the order I wanted the sentence to have).
 
 The last type are **logical** values like `TRUE` and `FALSE`. (Note that these are all caps.)
 
