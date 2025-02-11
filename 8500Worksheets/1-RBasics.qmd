@@ -100,11 +100,18 @@ Logical Operators allow you to combine or change the results of comparisons.
 ```
 (@) Explain, what does the code on each line above do? 
 
->
+>5 == 10 is testing whether 5 is equal to 10 (FALSE); 3 < 4 is testing whether 3 is less than 4 (TRUE); 5 != 10 is testing whether 5 is unequal to 10 (TRUE); 5 != 5 is testing whether 5 is unequal to 5 (FALSE); 3 == 4 | 3 is testing whether 3 is equal to 4 or 3 (TRUE - because of one of the two options is true); 3 != 4 & 3 != 5 is testing if 3 is unequal to 4 AND if 3 is unequal to 5 (TRUE - because both are true).
 
 (@) Create your own comparison. 
 ```{r}
+20 == 20
+15 != 20
+6 >= 3
+8 < 6
+4 == 4 & 4<=3
+4 != 3 | 2
 
+20 == 2*10 | 4 + 16
 ```
 
 ---
