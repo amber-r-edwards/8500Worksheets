@@ -199,6 +199,8 @@ FavCandy <- "dark chocolate"
 FavFlower <- "roses or tulips"
 
 paste(FavFlower, FavCandy)
+ValentinesGiftIdeas <- paste("Get me", FavFlower, "or", FavCandy, sep=" ")
+ValentinesGiftIdeas
 ```
 
 ### Vectors
