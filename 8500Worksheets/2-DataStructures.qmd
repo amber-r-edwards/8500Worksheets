@@ -109,20 +109,29 @@ matrix(25:49, byrow = TRUE, nrow = 5)
 (@) Can you create a matrix that has 3 rows with only even numbers from 2 to 18? 
 ```{r}
 matrix(2:18, byrow = TRUE, nrow = 3)
-#could write out numbers specifically - could create an if loop - something else(?)
+#could write out numbers specifically - could create an if loop - something else(?) - I think it needs an if loop to verify if the number can be divided by 2 and then instead of printing it creates the matrix but unsure how to put that together with the 2:18
 # if (i / 2){
 #  matrix(2:18, byrow = TRUE, nrow = 3)
 #}
+
 # if (2:18 / 2){
 #  matrix(2:18, byrow = TRUE, nrow = 3)
 #}
+
 # if (length / 2){
 #  matrix(2:18, byrow = TRUE, nrow = 3)
 #}
-if ([1] / 2){
-  matrix(2:18, byrow = TRUE, nrow = 3)
-}
-#error - unexpected } in } (?)
+
+#if ([1] / 2){
+#  matrix(2:18, byrow = TRUE, nrow = 3)
+#}
+
+#check_odd_even <- function(2:18) {
+#  if (1 %% 2 == 0) {
+#    print("Even")
+#  }
+#}
+#check_odd_even(2:18)
 ```
 
 ##### Subsetting Matricies 
