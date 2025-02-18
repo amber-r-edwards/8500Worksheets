@@ -422,7 +422,21 @@ for (i in 1:length(statepopulations$X1800)) {
 
 (@) What if we wanted to loop through the gay guides data? Can you write a loop that iterates through the cities in the Gay Guides data and returns the title of any location in Greenville? 
 ```{r}
+#for (g in 1:length(gayguides)) {
+#  if (g == "Greenville") {
+#    print(gayguides$title)
+#  }
+#}
+#not giving error code but also not printing anything
 
+greenville.function <- function(title) {
+  for (g in 1:length(gayguides$city)) {
+    if (gayguides$city[g] == title) {
+      print(gayguides$title[g])
+    }
+  }
+}
+greenville.function("Greenville")
 ```
 
 `while` is another useful tool for writing loops. While will run a loop _while_ a condition is true. Once that condition is not true, it exits. For example: 
