@@ -331,7 +331,7 @@ for (ex in 1:length(gayguides$Year)) {
 
 #### Loops
 
-A **loop* is used to iterate over items in a vector. They typically follow this form:
+A **loop** is used to iterate over items in a vector. They typically follow this form:
 
 ```
 for (item in vector) perform_action
@@ -359,12 +359,17 @@ for (p in 1:length(presidents)) {
 
 (@) Why does this work? What does `length()` do and why do we use it on `presidents`?
 
-> 
+> This code works because we're indicating the indices of the strings we want it to output - length() means the full length of indices (in this case 1-3 because there are 3 entries). We use it on 'presidents' because it is a string not a value, so there isn't a span of numbers to put (ex: 1:44).
 
 Create a character vector that contains the title of each of your classes this semester. Can you write a `for` loop that prints out "I am enrolled in" and the name of each of your classes? ("I am enrolled in History 8150", "I am enrolled in History 8000".....etc). Hint: you'll need a function to combine the output and some text of your choosing inside the function. 
 
 ```{r}
-
+spring.classes <- c("HIST8500", "HIST8850", "HIST8520")
+class.name.function <- function(spring.classes) {
+  print(paste("I am enrolled in", spring.classes, sep = " "))
+}
+#class.name.function()
+class.name.function(spring.classes)
 ```
 
 Sometimes we want our loop to terminate itself early. There are two statements that help us do that: 
@@ -395,11 +400,24 @@ for (i in 1:10) {
 ```
 
 (@) What happened here? Why did the loop only print 3 and 4? 
-
+> It printed 3 because - similar to the code block one above - 1 and 2 don't match the criteria, but it printed 4 because it matched the second criteria the loop moved too after next. Next caused it to exit the iteration, but not the loop, whereas after the second critera, break caused it to exit the entire loop. Hence 3 and 4 were the only outputs printed.
 
 (@) In the state population data, can you write a loop that pulls only states with populations between 200,000 and 250,000 in 1800? You could accomplish this a few different ways. Try to use next and break statements. 
 ```{r}
+data(statepopulations)
+for (i in 1:length(statepopulations$X1800)) {
+  if (is.na(x[i])) {
+    print('Missing')
 
+  } else if (i <= 250000)
+    next
+  
+  if (i >= 200000)
+    break
+  
+  print (i)
+}
+#if print "missing" code from statology.org - wouldn't print without it - need it to omit those that don't align with the parameters I set
 ```
 
 (@) What if we wanted to loop through the gay guides data? Can you write a loop that iterates through the cities in the Gay Guides data and returns the title of any location in Greenville? 
