@@ -41,9 +41,12 @@ x[c(3,3)]
 ```
 (@) Create your own vector and return three values using the subsetting method above. 
 ```{r}
-
+a <- c(5, 24, 12, 17, 8, 15)
+a[c(2,3,6)]
+a[order(y)]
+#a[order(3,5)] - didn't work, was wanting it to just order indices 3 and 5 
+#a[order(y[3,5])] - error in y[3,5] incorrect number of dimensions
 ```
-
 
 Negative integers allow us to exclude values at certain positions. 
 ```{r}
@@ -52,7 +55,7 @@ x[-c(3, 1)]
 
 (@) What happened here? Describe this in your own words. 
 
->
+> Here it printed x, but because we specified -c for values at 3 and 1, it excluded the values at those two positions from the printed output.
 
 You can use either positive or negative integers to subset a vector but you **cannot mix the two**.
 
@@ -69,7 +72,7 @@ x[x > 7]
 
 (@) What is going on in each of the lines above? Describe it in your own words. 
 
->
+>First we're re-creating our x variable with logical values that are assigned to the integer values already within the variable - in order they appear. Then, when we subset for any variables that are greater than 7, it is testing against the logical values that we assigned and giving of any of them that are TRUE because when we assigned the logical values we have TRUE for values greater than 7 and FALSE for values lesser than 7. If we had not assigned by this rule, it wouldn't have worked this way.
 
 Nothing returns the original vector. This isn't that useful here but can come in handy when you have more complex structures like matrices and arrays. 
 ```{r}
@@ -82,6 +85,8 @@ If your vector is named, you can also use character vectors to return elements w
 y[c("d")]
 ```
 (@) What happened here? Explain this in your own words. 
+
+> Similar to above with the logical values, this assigned letters to the integer values already wihtin the variable - in the order they appear and in alphabetical order. Then, we subset for the variable that aligns with "d" - the fourth letter of the alphabet so the fourth value within the variable.
 
 #### Matrices
 
