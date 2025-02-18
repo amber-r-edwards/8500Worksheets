@@ -103,12 +103,26 @@ In the `matrix()` function:
 
 (@) You try now, create a matrix that had five rows with numbers that range from 25 to 49. 
 ```{r}
-
+matrix(25:49, byrow = TRUE, nrow = 5)
 ```
 
 (@) Can you create a matrix that has 3 rows with only even numbers from 2 to 18? 
 ```{r}
-
+matrix(2:18, byrow = TRUE, nrow = 3)
+#could write out numbers specifically - could create an if loop - something else(?)
+# if (i / 2){
+#  matrix(2:18, byrow = TRUE, nrow = 3)
+#}
+# if (2:18 / 2){
+#  matrix(2:18, byrow = TRUE, nrow = 3)
+#}
+# if (length / 2){
+#  matrix(2:18, byrow = TRUE, nrow = 3)
+#}
+if ([1] / 2){
+  matrix(2:18, byrow = TRUE, nrow = 3)
+}
+#error - unexpected } in } (?)
 ```
 
 ##### Subsetting Matricies 
