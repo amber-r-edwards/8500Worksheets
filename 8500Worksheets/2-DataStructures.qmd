@@ -162,7 +162,7 @@ a[2,3]
 ```
 These skills are important because dataframes have the characteristics of both lists and matricies. 
 
-So lets load the Gay guides data from our class pacakge. 
+So lets load the Gay guides data from our class package. 
 ```{r}
 library(DigitalMethodsData)
 data("gayguides")
@@ -181,32 +181,42 @@ gayguides[1:3,]
 
 (@) Why is this different? What do we get compared to the previous example? 
 
->
+>With the first example "gayguides[2:3]" - we're only indicating that we want the two colunns and not specifying anything about the rows - which is hard to read in the console and not easily usable. If we specify the indices with "gayguides[1:3,]" - it pulls back rows for indices 1-3 and the values under each column for each of those indices rather that we can read in the console for a sample from each column. 
 
 (@) Can you find just the city and state for the first 5 entries? 
 ```{r}
-
+gayguides[1:5, 8:9]
 ```
 
 (@) How about the street address and type for rows 2,555 to 2,560?
 
 ```{r}
-
+gayguides[2555:2560, 5:6]
 ```
 
 (@) Load another dataset from `DigitalMethodsData`. Subset it to find some element of the data. Write the code below and then explain what element of the data you wanted to subset and why:
 ```{r}
+library(DigitalMethodsData)
+data(BostonWomenVoters)
 
+for (ag in 1:length(BostonWomenVoters$Age)) {
+  if (BostonWomenVoters$Age[ag] == 21) {
+    print(BostonWomenVoters$Name[ag])
+  }
+}
+#worked but error - if in (BostonWomenVoters$Age[ag] == 21 { missing value where TRUE/FALSE needed)
+
+BostonWomenVoters[1:20, 11]
 ```
 
-> 
+> The first one I wanted to separate all of the values out by those registered to vote by those who are listed to be 21 years old. This could be useful if you wanted to analyse the groups of women based on their age in case there are any correlations with jobs or location, or any of the other factors listed in the columns. I also made a second one because I wasn't sure if the for/if loop counted as a subset - this one gives the first 20 entries in the 11th column (age) - which could be useful if you wanted to quickly see a sample and look at what age comes up most often, leading to more questions.
 
 Another useful operator to know is `$` which we used a little bit in the previous worksheet. `$` is shorthand for accessing a variable in a dataframe. 
  
 So for example both of these produce the same result. One is just easier to type. Because the output here is so large, I've commented these two lines out. Uncomment them and the run the block.
 ```{r R.options=list(max.print=10)}
-#gayguides["title"]
-#gayguides$title
+gayguides["title"]
+gayguides$title
 ```
 
 Notice the above output is _huge_. We can combine `$` and `[` to drill down more specifically like we did earlier.
@@ -216,7 +226,7 @@ gayguides$city[100:110]
 
 (@) What does this code do? 
 
->
+>This code subsets the dataset "gayguides" by the column "city" and then subsets again by rows 100-110. This prints out the inputs for city for those 11 values.
 
 
 We can also use `$` to create a new column in `gayguides`. 
