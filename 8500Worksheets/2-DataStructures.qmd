@@ -476,13 +476,13 @@ You'll notice that the variable we created inside the function, `myvalue`, doesn
 Here's another example: 
 ```{r}
 historyStudents <- function(studentname, class) {
-  statement <- paste("Hello ", studentname, ". Welcome to ", class, "!", sept="")
+  statement <- paste("Hello ", studentname, ". Welcome to ", class, "!", sep=" s")
   statement
 }
 ```
 (@) Can you run this function? 
 ```{r}
-
+historyStudents("Amber", "HIST8500")
 ```
 
 
@@ -495,12 +495,16 @@ There are several components to a function.
 
 (@) Write a function that takes a string of text and counts the number of characters. The function should return "There are xx characters in that string." 
 ```{r}
-
+character.counter <- function(string) {
+  count <- nchar(string)
+  print(paste("There are",count, "characters in that string.", sep = " "))
+}
+character.counter("pls work")
 ```
 
 (@) Reflect on the process of building the above function. How did you go about figuring this out? 
 
->
+>I knew I needed to set up the function with the argument as the string to be examined, and I knew that I would need the character value to be made into a temporary variable so I could paste it into the return value. I first looked up what function counted the number of characters in a string, to which i found nchar(), which I used to align with the argument to make the temporary variable "count." Then I pasted everything together with the rest of the sentence for the result value.
 
 The body of a functions can use any of the techniques we've learned in this worksheet like loops and if statements. For example: 
 ```{r}
@@ -526,9 +530,10 @@ grade(75)
 (@) In the example below, why doesn't George Washington's grade get printed out? 
 ```{r}
 GeorgeWashington <- grade(60)
+GeorgeWashington
 ```
 
->
+>George Washington's grade doesn't get printed be ause in this string you're just assigning the variable George Washington it's grade, you're not restating it to print the actual grade output.
 
 
 Here's a more complex example: 
@@ -551,11 +556,26 @@ gg.locations("San Diego", 1980)
 (@) Write a function that accepts two arguments: a state and a year. The function should pull all the locations in that state and year from the gayguides dataset and return a statement that says "Found a location in [state] called [location title]". (Where [state] is the state and [location title] is the title of a location in that year and state.)
 
 ```{r}
-
+gg.state.locations <- function(d.state, d.year) {
+  for (i in 1:length(gayguides$state)) {
+    if (gayguides$state[i] == d.state && gayguides$Year[i] == d.year) {
+      print(paste("Found a location in", gayguides$state[i], "called", gayguides$title[i], ".", sep = " "))
+    }
+  }
+}
+gg.state.locations("NY", 1979)
+gg.state.locations("KY", 1980)
 ```
 
 (@) Use the Boston Women Voters dataset (BostonWomenVoters). Write a function that accepts the name of an occupation. Your function should return new dataframe that includes the records for every voter listed with that occupation.  
 ```{r}
-
+occupation.years <- function(job) {
+  for (i in 1:length(BostonWomenVoters$Occupation)) {
+    if (BostonWomenVoters$Occupation[i] == job) {
+      print(BostonWomenVoters$Name[i])
+    }
+  }
+}
+occupation.years("Housewife")
 ```
 
