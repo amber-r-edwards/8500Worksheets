@@ -338,7 +338,7 @@ if (x > 1990) print(TRUE) else print(FALSE)
 
 (@) Reflect on the question above. How did you figure this out? What was the process you went through to build this chunk of code?
 
-> 
+> I deeply overthought it - so even though I had the max() function up front, I overcomplicated how to test it with the TRUE/FALSE. By creating a variable that is equal to the max(), its much easier to just check the variable against the condition of 1990.
 
 #### Loops
 
