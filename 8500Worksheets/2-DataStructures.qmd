@@ -200,11 +200,12 @@ library(DigitalMethodsData)
 data(BostonWomenVoters)
 
 for (ag in 1:length(BostonWomenVoters$Age)) {
-  if (BostonWomenVoters$Age[ag] == 21) {
+  if (!is.na(BostonWomenVoters$Age[ag]) && BostonWomenVoters$Age[ag] == 21) {
     print(BostonWomenVoters$Name[ag])
   }
 }
-#worked but error - if in (BostonWomenVoters$Age[ag] == 21 { missing value where TRUE/FALSE needed)
+#worked but error - if in (BostonWomenVoters$Age[ag] == 21 { missing value where TRUE/FALSE needed) 
+# - talked through in class 2.19
 
 BostonWomenVoters[1:20, 11]
 ```
@@ -314,6 +315,8 @@ if (length(presidents) > 5) {
 (@) You can also use an if statement to check a variable in a dataframe. How might you use an if statement to check if the GayGuides dataset contains any year after 1990? (Hint: first try to figure out how to determine the latest year in the dataframe and then build an if statement that checks that and prints something out if its true or false. You should think about what kind of value in contained in the Year column, how to access it, and how to check for the latest value.) 
 
 ```{r}
+library(DigitalMethodsData)
+data(gayguides)
 max(gayguides$Year)
 #if (gayguides$Year > 1990) {
 # print("FALSE")
@@ -323,6 +326,7 @@ for (ex in 1:length(gayguides$Year)) {
     print("TRUE")
   }
 }
+
 ```
 
 (@) Reflect on the question above. How did you figure this out? What was the process you went through to build this chunk of code?
@@ -403,21 +407,51 @@ for (i in 1:10) {
 > It printed 3 because - similar to the code block one above - 1 and 2 don't match the criteria, but it printed 4 because it matched the second criteria the loop moved too after next. Next caused it to exit the iteration, but not the loop, whereas after the second critera, break caused it to exit the entire loop. Hence 3 and 4 were the only outputs printed.
 
 (@) In the state population data, can you write a loop that pulls only states with populations between 200,000 and 250,000 in 1800? You could accomplish this a few different ways. Try to use next and break statements. 
-```{r}
-data(statepopulations)
-for (i in 1:length(statepopulations$X1800)) {
-  if (is.na(x[i])) {
-    print('Missing')
 
-  } else if (i <= 250000)
-    next
-  
-  if (i >= 200000)
-    break
-  
-  print (i)
-}
+```{r}
+library(DigitalMethodsData)
+data(statepopulations)
+#for (i in 1:length(statepopulations$X1800)) {
+#  if (is.na(x[i])) {
+#    print('Missing')
+#
+#  } else if (i <= 250000)
+#  
+#  if (i >= 200000)
+#    break
+#  
+#  print (i)
+#}
 #if print "missing" code from statology.org - wouldn't print without it - need it to omit those that don't align with the parameters I set
+
+for (i in 1:nrow(statepopulations)){
+    if (is.na(statepopulations$X1800[i])) {
+        next
+    }
+    if (statepopulations$X1800[i] > 250000) {
+        next
+    }
+    if (statepopulations$X1800[i] < 200000) {
+        next
+    }
+    print (statepopulations$X1800[i])
+}
+
+#worked through in class 2.19
+#ex - if you want it to print the state names that match the criteria
+for (i in 1:nrow(statepopulations)){
+    if (is.na(statepopulations$X1800[i])) {
+        next
+    }
+    if (statepopulations$X1800[i] > 250000) {
+        next
+    }
+    if (statepopulations$X1800[i] < 200000) {
+        next
+    }
+    print (statepopulations$STATE[i])
+}
+
 ```
 
 (@) What if we wanted to loop through the gay guides data? Can you write a loop that iterates through the cities in the Gay Guides data and returns the title of any location in Greenville? 
