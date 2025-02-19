@@ -132,6 +132,10 @@ matrix(2:18, byrow = TRUE, nrow = 3)
 #  }
 #}
 #check_odd_even(2:18)
+
+evens <- seq(2:8, by=2)
+matrix(evens, byrow = TRUE, nrow = 3)
+
 ```
 
 ##### Subsetting Matricies 
@@ -317,15 +321,18 @@ if (length(presidents) > 5) {
 ```{r}
 library(DigitalMethodsData)
 data(gayguides)
-max(gayguides$Year)
+#max(gayguides$Year)
 #if (gayguides$Year > 1990) {
 # print("FALSE")
 #}
-for (ex in 1:length(gayguides$Year)) {
-  if (gayguides$Year[ex] > 1990) {
-    print("TRUE")
-  }
-}
+#for (ex in 1:length(gayguides$Year)) {
+#  if (gayguides$Year[ex] > 1990) {
+#    print("TRUE")
+#  }
+#}
+#was immensly overthinking - went over in class 2.19
+x <- max(gayguides$Year)
+if (x > 1990) print(TRUE) else print(FALSE)
 
 ```
 
