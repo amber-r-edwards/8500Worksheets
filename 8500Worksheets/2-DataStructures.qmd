@@ -133,8 +133,9 @@ matrix(2:18, byrow = TRUE, nrow = 3)
 #}
 #check_odd_even(2:18)
 
-evens <- seq(2:8, by=2)
-matrix(evens, byrow = TRUE, nrow = 3)
+#evens <- seq(1:8, by=2)
+
+matrix((seq(from=2, to=18, by = 2)), byrow = TRUE, nrow = 3)
 
 ```
 
