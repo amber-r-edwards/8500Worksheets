@@ -122,13 +122,16 @@ statepopulations %>% mutate(difference = X1900 - X1800)
 
 (@) In the Boston Women Voters dataset, every voter is given an age. Can you use their age to calculate each person's birth year? (Assume all this data was collected in 1920.)
 ```{r}
-
+data(BostonWomenVoters)
+birthyears <- BostonWomenVoters %>%
+  mutate(birthyear = 1920 - Age)
 ```
 
 (@) Can you create a new column that combines the city and state columns in `gayguides` into a new column called location? It should list the city, state. (i.e. San Diego, CA)
 
 ```{r}
-
+gglocationcolumn <- gayguides %>%
+  mutate(location = paste(city, state, sep = ", "))
 ```
 
 ### Arrange
