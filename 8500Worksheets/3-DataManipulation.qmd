@@ -1,7 +1,7 @@
 ---
 title: 'Worksheet 3: Data Manipulation'
-author: ""
-date: ""
+author: "Amber Edwards"
+date: "March 4, 2025"
 ---
 
 _This is the third in a series of worksheets for History 8500 at Clemson University. The goal of these worksheets is simple: practice, practice, practice. The worksheet introduces concepts and techniques and includes prompts for you to practice in this interactive document. When you are finished, you should change the author name (above), render your document to a pdf, and upload it to canvas. Don't forget to commit your changes as you go and push to github when you finish the worksheet._
@@ -39,16 +39,18 @@ Notice that this subsetted the data and returned only the title and year. Howeve
 
 (@) Use `select()` to take the city and state from gayguides and add them to a dataframe called "locations". 
 ```{r}
-
+locations <- gayguides %>%
+  select(city, state)
 ```
 
 (@) What did you do to save the data to a new data frame? Why? 
 
->
+> To save the data to a new data frame I had to essentially create it like a variable with <-. This assigned the subset to a dataframe titled locations, so I can reference it in future functions if needed or just view it as separate from the full dataset.
 
 (@) Can you use `select()` to grab all the columns of `gayguides` EXCEPT for the city and state? Hint: You might want to read the documentation for this function. 
 ```{r}
-
+ggexceptcitystate <- gayguides %>% 
+  select(!(city:state))
 ```
 
 ### Filter
@@ -76,30 +78,37 @@ gayguides %>%
 (@) The above code grabs every location where the city is Greenville. However, there is more than one city named Greenville. Can you filter to retrieve Greenville, SC? 
 
 ```{r}
-
+greenvilleSC <- gayguides %>%
+  filter(city == "Greenville", state == "SC")
 ```
 
 (@) How about every location between 1975 and 1980? 
 
 ```{r}
-
+location75_80 <- gayguides %>%
+  filter(Year <= 1980 & Year >= 1975)
 ```
 
 
 (@) Every entry in Greenville, SC between 1975 and 1980? 
 
 ```{r}
-
+greenvilleSC75_80 <- gayguides %>%
+  filter(city == "Greenville", state == "SC", Year <= 1980 & Year >= 1975)
 ```
 
 (@) Can you find all locations in 1975 except for New York and San Francisco? 
 ```{r}
-
+locations75exceptNYSF <- gayguides %>%
+  filter(Year == 1975, city != "New York", city != "San Francisco")
 ```
 
 (@) The amenity features column in gay guides contains a comma separated list of categorizations. (G), for example, stands for girls. However, this language changed over time and women's locations eventually are described as (L). What if we want to filter by any entry that has (G) OR (L) in the amenity feature column?  This is a bit more complicated because the entries are a comma separated list and (G) or (L) is often paired with other categorizations. How might you _search the dataframe for entries that match_ (G) or (L)?
 ```{r}
+GLamenities <- gayguides %>%
+  filter(amenityfeatures == c("(G)", "(L)"))
 
+#is this considered searching? I just made a new variable so I could view it rather than get the big long output into the terminal
 ```
 
 ### Mutate
