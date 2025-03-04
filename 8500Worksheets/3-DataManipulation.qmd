@@ -150,7 +150,9 @@ gayguides %>%
 
 (@) Using the `statepopulation` data, which state has the largest population in 1850? Write code that pulls only the relevant columns (state and 1850) and sorts it accordingly. 
 ```{r}
-
+statepopulations %>%
+  select(STATE, X1850) %>%
+  arrange(desc(X1850))
 ```
 
 ### Group_by() and Summarize()
