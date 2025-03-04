@@ -249,9 +249,9 @@ regions <- read.csv("https://raw.githubusercontent.com/regan008/DigitalMethodsDa
 
 (@) Explain what you did above. What variable did you join by and why? What results?
 
-(@)How much did LGTBQ life grow between 1970 and 1980? Can you create a data frame that computes the growth in the number of locations between 1970 and 1980 for every state? For every region? 
+(@) How much did LGTBQ life grow between 1970 and 1980? Can you create a data frame that computes the growth in the number of locations between 1970 and 1980 for every state? For every region? 
 ```{r}
-
+i
 ```
 
 
@@ -270,11 +270,15 @@ sc.parks <- sc.parks %>%
 ```
 
 (@) What did this code do? 
->
+>This code lengthened the data by increasing the number of rows for every entry in a  given year - pulling the years from the columns and therefore also decreasing the number of columns. This makes each row representative of one observation, alltogether lengthening the whole thing.
 
 (@) Here's another wide data frame. Can you turn this from a wide to a narrow data frame? 
 ```{r}
 rec.spaces <- read.csv("https://raw.githubusercontent.com/regan008/DigitalMethodsData/main/raw/PlayAreabyType.csv")
+
+rec.spaces <- rec.spaces %>%
+  pivot_longer(!type, names_to = "year",
+  values_to = "count")
 ```
 
 The opposite of `pivot_longer()` is `pivot_wider()`. It "widens" data by increasing the number of columns and decreasing the number of rows. We can revert `sc.parks` back to a wide dataset using this function.
@@ -285,12 +289,14 @@ sc.parks %>%
 
 (@) Widen the `sc.parks` dataset so that the column names are drawn from the type of recreation worker.
 ```{r}
-
+sc.parks <- sc.parks %>%
+  pivot_wider(names_from = type_of_worker, values_from = count)
 ```
 
 (@) Turn `rec.spaces` into a wide dataframe. 
 ```{r}
-
+rec.spaces <- rec.spaces %>%
+  pivot_wider(names_from = type, values_from = count)
 ```
 
 
