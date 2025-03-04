@@ -220,7 +220,7 @@ gayguides %>%
 
 ## Re-Shaping Data: Joins and Pivots
 
-### Joins()
+### Joins(a)
 At some point, you might have a situation where you want to join two tables together. For example, in the `almshouse_admissions` dataset there is a column called "Descriptions.by.Clerk" which contains a code for each occupation.
 ```{r}
 data("almshouse_admissions")
@@ -242,6 +242,9 @@ head(almshouse_admissions)
 (@) Below I've downloaded data about each of the census regions. Join this dataset with `gayguides`. Create a data frame that includes each of the regions and the total number of locations in 1980. How many locations appear in the Mountain region in 1980?
 ```{r}
 regions <- read.csv("https://raw.githubusercontent.com/regan008/DigitalMethodsData/main/raw/censusregions.csv")
+
+#gayguides <- left_join(State.Code, state, by="Region"="code")
+#unsure about the syntax with the left_join - i know it would be State.Code in the regions data frame and state in the gayguides data set and then I want Regions from the regions data set
 ```
 
 (@) Explain what you did above. What variable did you join by and why? What results?
