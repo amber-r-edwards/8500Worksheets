@@ -175,23 +175,47 @@ What happened here? In this example, we asked group_by to create groups based on
 
 (@) You try, use group_by and summarize to find the total number of locations in each state, each year.
 ```{r}
-
+gayguides %>%
+  select(title, state, Year) %>%
+  group_by(state, Year) %>%
+  summarize(count = n())
 ```
 
 (@) Summarize can do more than just count rows. Can you use `summarize()` to find the average age for each occupation in the Boston Women Voters data?
 ```{r}
+BostonWomenVoters %>%
+  select(Age, Occupation)
+  group_by(Age, Occupation)
+  summarize(mean(Age, trim = 0, na.rm = TRUE))
 
+#BostonWomenVoters %>%
+#  select(Age, Occupation)
+#  group_by(Occupation, Age)
+#  summarize(mean = mean(Age, trim = 0, na.rm = TRUE))
 ```
 
 (@) In the `gayguides` data, on average how many locations did each city in South Carolina have between 1970 and 1975?
 ```{r}
+#same as question above - Tech Table
+#tried to get down to a count of each city but only given overall count
 
+SCaverage <- gayguides %>%
+  select(title, city, state, Year) %>%
+  filter(state == "SC",city, Year <= 1975 & Year >=1970) %>%
+  group_by(city)
+  summarize(count = n())
 ```
 
 (@) Filter the dataset for only the values in the southernstates list (created in the block below). Then tell me, how many locations were in all the southern states in 1975?
 ```{r}
 southernstates <- c("AL", "AR", "FL", "GA", "KY", "LA", "MD", "MS", "NC", "SC", "TN", "TX", "VI", "WV")
 
+gayguides %>%
+  filter(Year == 1975, state == southernstates) %>%
+  group_by(state) %>%
+  summarize(count = n())
+
+#47 total locations (added together manually) - what function could add these values?
 ```
 
 ## Re-Shaping Data: Joins and Pivots
