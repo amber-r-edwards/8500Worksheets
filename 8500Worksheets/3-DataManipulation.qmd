@@ -285,7 +285,8 @@ locationsbystate <- joined.gg %>%
   filter(Year == 1980 | Year == 1970)  %>% 
   group_by(Year, state)  %>% 
   summarize(count = n()) %>%
-  mutate(difference = count[[state]Year = 1980] - count[[state]Year = 1970])
+  
+#  mutate(difference = count[[state]Year = 1980] - count[[state]Year = 1970])
 
 #locationsbystate <- locationsbystate %>%
 #  pivot_wider(names_from = Year, values_from = count) %>%
