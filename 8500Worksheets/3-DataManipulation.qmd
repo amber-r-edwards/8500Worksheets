@@ -273,11 +273,31 @@ regions1980 %>% filter(Region == "Mountain")
 
 (@) How much did LGTBQ life grow between 1970 and 1980? Can you create a data frame that computes the growth in the number of locations between 1970 and 1980 for every state? For every region? 
 ```{r}
-growthoflocationsbystate <- joined.gg %>%
-  group_by(state, Year) %>%
-  summarize(growth = state[Year ==1980] - state[Year == 1970])
+#growthoflocationsbystate <- joined.gg %>%
+#  select(state, Year == 1980 & Year == 1970) %>%
+#  group_by(state, Year) %>%
+#  summarize(count = n())
 
-#look at later
+#look at later 
+#error in select() - in argument 'Year == 1980' object 'Year' not found 
+
+locationsbystate <- joined.gg %>%
+  filter(Year == 1980 | Year == 1970)  %>% 
+  group_by(Year, state)  %>% 
+  summarize(count = n()) %>%
+  mutate(difference = count[[state]Year = 1980] - count[[state]Year = 1970])
+
+#locationsbystate <- locationsbystate %>%
+#  pivot_wider(names_from = Year, values_from = count) %>%
+#  mutate(difference = 1980 - 1970)
+
+#used this to just see the two next to each other - doesn't work because column names are numbers
+
+#locationsbystate <- locationsbystate %>%
+#  group_by(state, 1970, 1980)  %>% 
+#  summarize(count == n(state[1980] - state[1970]))
+
+
 ```
 
 
@@ -338,26 +358,93 @@ The implicit question was, "How many locations appear in each year?". The `judge
 
 (@) First, tell me, what is the question you are asking? 
 ```{r}
+data(judges)
+#A question I would want to ask would be how old the judges were when they were confirmed? - decided this was too hard but kept in what I tried
 
+#----------------------------------
+
+#NEW QUESTION - How many judges did George W. Bush appoint?
 ```
 
 (@) Now write some code to address that question. Comment the code with notes that explain your thinking as you go. Use functions like select(), filter(), etc to pair down your dataset and reshape it to address your question. 
 ```{r}
+#data(judges)
+#The first thing I notice is that the birthdate and confirmation dates are in different formats - so I will need to separate out the year, month, and date from the confirmation date column. I'll just use years to make it easier, I also have to decide what other information I want (limiting to what I'm assuming is a first appointment?), who appointed them, and what they were appointed as. But first I'll isolate the columns I need so it's easier to read in general. 
+
+#judges <- judges %>%
+#  select(Last.Name, First.Name, Middle.Name, Suffix, Birth.Year, Court.Type..1. , Appointment.Title..1. ,Appointing.President..1. , Confirmation.Date..1. )
+
+#Now I need to figure out how to change the Confirmation date format from all of the information to separated by year, month, and day. - could not figure this out, I think would need regular expression (R textbook)
+
+#-----------------------------------------------------------------
+
+#NEW QUESTION
+data(judges)
+#first I need to select the columns I'll need - selecting the pieces of the names and the president (just doing first appointment - otherwise would have to combine the rows of appointments)
+#then I'll want to group_by the president, and summarize by adding a counting the number of appointments
+
+judges <- judges %>%
+  select(First.Name, Last.Name, Middle.Name, Suffix, Appointing.President..1. )  %>% 
+  group_by(Appointing.President..1.)  %>% 
+  summarize(count = n ())
+
+#then, if I wanted to see who had the most and who had the least - I could put it into descending order
+
+judges <- judges  %>% 
+  arrange(desc(count))
 
 ```
 
 (@) Now ask a question of the `gayguides` data (or another dataset of your choice). What is the question you are asking? 
 ```{r}
-
+data(almshouse_admissions)
+#looking at the codebook for the codes for Reason Discharged - Were more women discharged (1) than died(2)? If so/not, by how many?
 ```
 
 (@) Now write some code to address that question. Comment the code with notes that explain your thinking as you go. Use functions like select(), filter(), etc to pair down your dataset and reshape it to address your question. 
 ```{r}
-
+#so first I isolated the columns I wanted to keep - indicating the unique entries and reasons discharged
+#then I filtered by the reason discharged as 1 and 2 (discharged and death)
+#then I grouped by the reason discharged and created a new column that provides the count of each - I feel like there is a way to find the difference here but I could not get it to work (similar to issue in question in Join section)
+deathvsdischarge <- almshouse_admissions  %>% 
+  select(Last.Name, First.Name, Reason.Discharged) %>% 
+  filter(Reason.Discharged == 1 | Reason.Discharged == 2)  %>% 
+  group_by(Reason.Discharged) %>% 
+  summarize(count = n())
+#here I manually subtrack between the two reasons
+deathvsdischarge$count[1] - deathvsdischarge$count[2]
+#I realized I could do the same thing but for every reason if I wanted to compare the differences between different reasons - i would just need to take out my filter
+dischargereasonscomparison <- almshouse_admissions  %>% 
+  select(Last.Name, First.Name, Reason.Discharged) %>% 
+  group_by(Reason.Discharged) %>% 
+  summarize(count = n())
 ```
 
 (@) Write a function that filters the gay guides dataset. It should accept 2 arguments: year and state. When passed to the function the function should return only the title, type, state and year for each entry. 
 ```{r}
+#gg.entryfunction <- function(Year, state) {
+#  data(gayguides)
+#
+#  for (i in 1:length(gayguides)) {
+#    if (gayguides$Year[i] == Year && gayguides$state[i] == state) {
+#      gg.entrydata <- gayguides %>%
+#        filter(title, type, state, Year)
+#    }
+#  }
+#}
+
+#gg.entryfunction(1979, NY)
+
+gg.entryfunction <- function(g.year, g.state) {
+  data(gayguides)
+  gg.entrydata <- gayguides %>%
+    select(title, type, state, Year) %>%
+    filter(Year == g.year, state == g.state)
+  
+  gg.entrydata
+}
+
+gg.entryfunction(1979, "NY")
 
 ```
 
