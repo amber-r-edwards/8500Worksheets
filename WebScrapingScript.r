@@ -12,6 +12,13 @@ questdownload <- ia_files(questitems) %>%
     filter(type == "txt") %>%
     ia_download(dir = "questfiles", extended_name = TRUE, overwrite = TRUE, silence = FALSE)
 
+#okay ended up with two dataframes - one with the files and another with the metadata - I want to join them but will tidy the metadata dataframe first
+questmetadata <- questmetadata %>%
+    pivot_wider(
+        names_from = field,
+        values_from = value
+    )
 
-#create empty dataframe
-df <- data.frame(id = character())
+questmetadata <- questmetadata %>%
+    select(id, title, volume, date, identifier, notes)
+
