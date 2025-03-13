@@ -24,5 +24,25 @@ questmetadata <- questmetadata %>%
 
 #join using the id 
 questmdandfiles <- left_join(questmetadata, questdownload, by=c("id"))
+#would probably want to make the volume and numbers separate columns
 
-#okay so that worked but isn't a follow-able script - will redo with instructions from notes before getting into research questions
+#okay so that worked but isn't right for the assignment I don't think - will redo with instructions from notes before getting into research questions
+
+#first loop
+df <- data.frame(id = character(), title=character(), volume = character())
+#loop that will search based on parameters I give it and for each result it will print the ID (?) and add each result into a new row
+internetarchivesearch <- ia_keyword_search("collection:questquarterly", num_results = 20)
+
+for (i in 1:length(internetarchivesearch)) {
+    result <- internetarchivesearch[[i]]
+    df <- rbind(df, data.frame(
+        id = result$id,
+        title = result$title,
+        volume = result$volume,
+        date = resuilt$date,
+        identifier = result$identifier,
+        notes = resul$notes,
+        stringsAsFactors = FALSE
+    ))
+    print(paste("adding", i, sep=" ")) 
+}
