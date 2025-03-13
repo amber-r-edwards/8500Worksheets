@@ -22,3 +22,7 @@ questmetadata <- questmetadata %>%
 questmetadata <- questmetadata %>%
     select(id, title, volume, date, identifier, notes)
 
+#join using the id 
+questmdandfiles <- left_join(questmetadata, questdownload, by=c("id"))
+
+#okay so that worked but isn't a follow-able script - will redo with instructions from notes before getting into research questions
