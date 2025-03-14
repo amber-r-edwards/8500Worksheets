@@ -36,7 +36,8 @@ df <- data.frame(id = character(), title=character(), volume = character())
 internetarchivesearch <- ia_keyword_search("collection:questquarterly", num_results = 20)
 
 for (i in 1:length(internetarchivesearch)) {
-    result <- internetarchivesearch[i]
+    result <- internetarchivesearch[[i]]
+    if (is.list(result) && all(c("id", "title", "volume", "date", "identifier", "notes") %in% names(result))) {
     df <- rbind(df, data.frame(
         id = result$id,
         title = result$title,
@@ -47,4 +48,9 @@ for (i in 1:length(internetarchivesearch)) {
         stringsAsFactors = FALSE
     ))
     print(paste("adding", i, sep=" ")) 
+    } else {
+        print(paste("skpping", i, sep = " "))
+    }
 }
+
+
