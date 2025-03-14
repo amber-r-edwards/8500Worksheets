@@ -36,17 +36,7 @@ df <- data.frame(id = character(), title=character(), volume = character())
 internetarchivesearch <- ia_keyword_search("collection:questquarterly", num_results = 20)
 
 for (i in 1:length(internetarchivesearch)) {
-    result <- ia_get_items(internetarchivesearch[i])
-    metadata <- ia_metadata(result[i])
-    df <- rbind(df, data.frame(
-        id = metadata$id,
-        title = metadata$title,
-        volume = metadata$volume,
-        date = metadata$date,
-        identifier = metadata$identifier,
-        notes = metadata$notes,
-        stringsAsFactors = FALSE
-    ))
+    result <- ia_metadata(internetarchivesearch[i])
     print(paste("adding", i, sep=" ")) 
 }
 
