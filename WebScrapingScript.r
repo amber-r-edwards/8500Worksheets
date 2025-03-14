@@ -38,15 +38,13 @@ internetarchivesearch <- ia_keyword_search("collection:questquarterly", num_resu
 for (i in seq_along(internetarchivesearch)) {
     result <- ia_metadata(internetarchivesearch[i])
         df <- rbind(df, data.frame(
-         id = result$id,
-         title = result$title,
-         volume = result$volume,
-         date = result$date,
-         identifier = result$identifier,
-         notes = result$notes,
+         id = result(id),
+         title = result(title),
+         volume = result(volume),
+         date = result(date),
+         identifier = result(identifier),
+         notes = result(notes),
          stringsAsFactors = FALSE
         ))
     print(paste("adding", i, sep=" ")) 
 }
-
-
