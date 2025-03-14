@@ -40,15 +40,17 @@ result <- ia_metadata(metadata)
 for (i in seq_along(internetarchivesearch)) {
     result <- ia_get_items(internetarchivesearch[i])
     print(paste("adding", i, sep=" ")) 
+}
 
+for (i in seq_along(result)) {
     metadata <- ia_metadata(result[i])
         df <- rbind(df, data.frame(
-         id = metadata$id,
-         title = metadata$title,
-         volume = metadata$volume,
-         date = metadata$date,
-         identifier =metadata$identifier,
-         notes = metadata$notes,
+         id = character(),
+         title = character(),
+         volume = character(),
+         date = character(),
+         identifier = character(),
+         notes = character(),
          stringsAsFactors = FALSE
         ))
     print(paste("adding metadata", i, sep= " "))
