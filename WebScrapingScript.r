@@ -35,8 +35,17 @@ df <- data.frame(id = character(), title=character(), volume = character())
 #loop that will search based on parameters I give it and for each result it will print the ID (?) and add each result into a new row
 internetarchivesearch <- ia_keyword_search("collection:questquarterly", num_results = 20)
 
-for (i in 1:length(internetarchivesearch)) {
+for (i in seq_along(internetarchivesearch)) {
     result <- ia_metadata(internetarchivesearch[i])
+        df <- rbind(df, data.frame(
+         id = result$id,
+         title = result$title,
+         volume = result$volume,
+         date = result$date,
+         identifier = result$identifier,
+         notes = result$notes,
+         stringsAsFactors = FALSE
+        ))
     print(paste("adding", i, sep=" ")) 
 }
 
