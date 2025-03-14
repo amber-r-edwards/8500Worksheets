@@ -34,17 +34,23 @@ library(tidyverse)
 df <- data.frame(id = character(), title=character(), volume = character())
 #loop that will search based on parameters I give it and for each result it will print the ID (?) and add each result into a new row
 internetarchivesearch <- ia_keyword_search("collection:questquarterly", num_results = 20)
+metadata <- ia_get_items(internetarchivesearch)
+result <- ia_metadata(metadata)
 
 for (i in seq_along(internetarchivesearch)) {
-    result <- ia_metadata(internetarchivesearch[i])
+    result <- ia_get_items(internetarchivesearch[i])
+    print(paste("adding", i, sep=" ")) 
+
+    metadata <- ia_metadata(result[i])
         df <- rbind(df, data.frame(
-         id = result(id),
-         title = result(title),
-         volume = result(volume),
-         date = result(date),
-         identifier = result(identifier),
-         notes = result(notes),
+         id = metadata$id,
+         title = metadata$title,
+         volume = metadata$volume,
+         date = metadata$date,
+         identifier =metadata$identifier,
+         notes = metadata$notes,
          stringsAsFactors = FALSE
         ))
-    print(paste("adding", i, sep=" ")) 
+    print(paste("adding metadata", i, sep= " "))
+    
 }
