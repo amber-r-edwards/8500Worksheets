@@ -44,7 +44,7 @@ for (i in seq_along(internetarchivesearch)) {
 
 for (i in seq_along(result)) {
     metadata <- ia_metadata(result[i])
-        df <- rbind(df, data.frame(
+        metadata <- rbind(df, data.frame(
          id = character(),
          title = character(),
          volume = character(),
