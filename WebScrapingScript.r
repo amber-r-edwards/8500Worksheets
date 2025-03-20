@@ -33,15 +33,17 @@ library(tidyverse)
 #first loop
 df <- data.frame(id = character(), title=character(), volume = character(), date = character(), identifier = character(), notes = character (), stringsAsFactors = FALSE )
 #loop that will search based on parameters I give it and for each result it will print the ID (?) and add each result into a new row
-internetarchivesearch <- ia_keyword_search("collection:questquarterly", num_results = 20)
-metadata <- ia_get_items(internetarchivesearch)
-result <- ia_metadata(metadata)
 
+#set up search parameters
+internetarchivesearch <- ia_keyword_search("collection:questquarterly", num_results = 20)
+
+#using results from search - gather metadata for each result item
 for (seq_along(internetarchivesearch)) {
     metadata <- ia_get_items(internetarchivesearch)
     print(paste("gathered metadata for", length(metadata), "items.", sep = " ")) 
 }
 
+#access metadata and create a dataframe
 for (seq_along(metadata)) {
     result <- ia_metadata(metadata)
         df <- result %>%
