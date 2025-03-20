@@ -37,9 +37,9 @@ internetarchivesearch <- ia_keyword_search("collection:questquarterly", num_resu
 metadata <- ia_get_items(internetarchivesearch)
 result <- ia_metadata(metadata)
 
-for (i in seq_along(internetarchivesearch)) {
-    result <- ia_get_items(internetarchivesearch[i])
-    print(paste("adding", i, sep=" ")) 
+for (seq_along(internetarchivesearch)) {
+    metadata <- ia_get_items(internetarchivesearch)
+    print(paste("gathered metadata for", length(metadata), "items.", sep = " ")) 
 }
 
 for (i in seq_along(result)) {
