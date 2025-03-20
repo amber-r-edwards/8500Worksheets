@@ -44,23 +44,12 @@ for (i in seq_along(internetarchivesearch)) {
 
 for (i in seq_along(result)) {
     metadata <- ia_metadata(result[i])
-
-#print lengths of each metadata element (error about diff number of rows)
-    print(paste("Length of id:", length(metadata$id)))
-    print(paste("Length of title:", length(metadata$title)))
-    print(paste("Length of volume:", length(metadata$volume)))
-    print(paste("Length of date:", length(metadata$date)))
-    print(paste("Length of identifier:", length(metadata$identifier)))
-    print(paste("Length of notes:", length(metadata$notes)))
-
         df <- rbind(df, data.frame(
-         id = metadata$id,
-         title = metadata$title,
-         volume = metadata$volume,
-         date = metadata$date,
-         identifier = metadata$identifier,
-         notes = metadata$notes,
-         stringsAsFactors = FALSE
+         metadata %>%
+            pivot_wider(
+                names_from = field,
+                values_from = value
+            )
         ))
     print(paste("adding metadata", i, sep= " "))
     
