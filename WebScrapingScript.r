@@ -31,7 +31,7 @@ questmdandfiles <- left_join(questmetadata, questdownload, by=c("id"))
 library(internetarchive)
 library(tidyverse)
 #first loop
-df <- data.frame(id = character(), title=character(), volume = character())
+df <- data.frame(id = character(), title=character(), volume = character(), date = character(), identifier = character(), notes = character (), stringsAsFactors = FALSE )
 #loop that will search based on parameters I give it and for each result it will print the ID (?) and add each result into a new row
 internetarchivesearch <- ia_keyword_search("collection:questquarterly", num_results = 20)
 metadata <- ia_get_items(internetarchivesearch)
@@ -44,13 +44,13 @@ for (i in seq_along(internetarchivesearch)) {
 
 for (i in seq_along(result)) {
     metadata <- ia_metadata(result[i])
-        metadata <- rbind(df, data.frame(
-         id = character(),
-         title = character(),
-         volume = character(),
-         date = character(),
-         identifier = character(),
-         notes = character(),
+        df <- rbind(df, data.frame(
+         id = metadata$id,
+         title = metadata$title,
+         volume = metadata$volume,
+         date = metadata$date,
+         identifier = metadata$identifier,
+         notes = metadata$notes,
          stringsAsFactors = FALSE
         ))
     print(paste("adding metadata", i, sep= " "))
