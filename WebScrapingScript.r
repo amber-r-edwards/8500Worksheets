@@ -58,3 +58,10 @@ questmetadata <- result %>%
 
 questmetadata <- questmetadata %>%
     select(id, title, volume, date, notes)
+
+#go through each row and get issue/download text files - inserted into dataframe in association with metadata
+for (i in questmetadata) {
+    questmetadata <- ia_files(metadata_list[i]) %>%
+        filter(type == "txt") %>%
+        ia_download(dir = "questfiles", extended_name = TRUE, overwrite = TRUE, silence = FALSE)
+}
