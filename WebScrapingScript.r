@@ -45,6 +45,16 @@ for (i in seq_along(internetarchivesearch)) {
     print(paste("gathered metadata for", length(metadata), "items.", sep = " ")) 
 }
 
-#access metadata and insert into usable dataframe
+#access metadata and insert into dataframe
 result <- ia_metadata(metadata_list)
 print(paste("added metadata for", length(metadata_list), "items.", sep= " "))
+
+#tidy dataframe - select information that will be helpful for research question
+questmetadata <- result %>%
+    pivot_wider(
+        names_from = field,
+        values_from = value
+    ) 
+
+questmetadata <- questmetadata %>%
+    select(id, title, volume, date, notes)
