@@ -46,7 +46,5 @@ for (i in seq_along(internetarchivesearch)) {
 }
 
 #access metadata and insert into usable dataframe
-for (i in seq_along(metadata_list)) {
-    result <- ia_metadata(metadata_list[[i]])
-    print(paste("added metadata for", length(result), "items.", sep= " "))
-}
+result <- ia_metadata(metadata_list)
+print(paste("added metadata for", length(metadata_list), "items.", sep= " "))
