@@ -42,15 +42,12 @@ for (seq_along(internetarchivesearch)) {
     print(paste("gathered metadata for", length(metadata), "items.", sep = " ")) 
 }
 
-for (i in seq_along(result)) {
-    metadata <- ia_metadata(result[i])
-        df <- rbind(df, data.frame(
-         metadata %>%
+for (seq_along(metadata)) {
+    result <- ia_metadata(metadata)
+        df <- result %>%
             pivot_wider(
                 names_from = field,
                 values_from = value
             )
-        ))
-    print(paste("adding metadata", i, sep= " "))
-    
+    print(paste("added metadata for", length(result), "items.", sep= " "))
 }
