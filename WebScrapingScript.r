@@ -77,7 +77,7 @@ install.packages("fs")
 library(fs)
 
 for (i in seq_along(questmetadata$filename)) {
-    old_file_path <- file.path("questfiles", paste0(id[i], ".txt"))
+    old_file_path <- file.path("questfiles", paste0(questmetadata$id[i], ".txt"))
     new_file_path <- file.path("questfiles", questmetadata$filename[i])
 
     if (file_exists(old_file_path)) {
