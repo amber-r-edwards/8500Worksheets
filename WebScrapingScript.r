@@ -38,7 +38,7 @@ df <- data.frame(id = character(), title=character(), volume = character(), date
 internetarchivesearch <- ia_keyword_search("collection:questquarterly", num_results = 20)
 
 #using results from search - gather metadata for each result item
-metadata_list <- list()
+metadata_list <- list() 
 for (i in seq_along(internetarchivesearch)) {
     metadata <- ia_get_items(internetarchivesearch[i])
     metadata_list <- append(metadata_list, metadata)
@@ -60,8 +60,30 @@ questmetadata <- questmetadata %>%
     select(id, title, volume, date, notes)
 
 #go through each row and get issue/download text files - inserted into dataframe in association with metadata
-for (i in questmetadata) {
-    questmetadata <- ia_files(metadata_list[i]) %>%
+for (i in seq_len(nrow(questmetadata))) {
+    files <- ia_files(metadata_list[i]) %>%
         filter(type == "txt") %>%
-        ia_download(dir = "questfiles", extended_name = TRUE, overwrite = TRUE, silence = FALSE)
+        ia_download(dir = "questfiles", extended_name = FALSE, overwrite = TRUE, silence = FALSE)
+}
+
+#notes from Dr. R
+#Use the metadata file to rename each file in your questfiles folder. here is where you might use a loop.
+#As you work on the code to do that, add a column to the metadata that has the filename so it could be used as a join column later
+
+questmetadata <- questmetadata %>%
+    mutate(filename = paste0(date, id, ".txt"))
+
+install.packages("fs")
+library(fs)
+
+for (i in seq_along(questmetadata$filename)) {
+    old_file_path <- file.path("questfiles", paste0(id[i], ".txt"))
+    new_file_path <- file.path("questfiles", questmetadata$filename[i])
+
+    if (file_exists(old_file_path)) {
+        file_move(old_file_path, new_file_path)
+        print(paste("renamed", old_file_path, "to", new_file_path))
+    } else {
+        print(paste("file", old_file_path, "does not exist"))
+    }
 }
