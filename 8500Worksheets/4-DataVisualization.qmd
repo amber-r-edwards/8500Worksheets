@@ -130,21 +130,37 @@ ggplot(sc.rec, aes(x = state, y = state.expenditures )) +
 
 (@) Using the `gayguides` data, create a bar chart that shows the number of locations in 1980 in South Carolina, Georgia, and North Carolina. 
 ```{r}
+data(gayguides)
+gg1980 <- gayguides %>% filter(Year==1980, state==c("SC", "GA", "NC")) %>% 
+group_by(state) %>%
+summarize(count = n())
 
+ggplot(gg1980, aes(x=state, y=count, fill=state)) + geom_col() + labs(x="State", y="Number of Locations Listed", title="Number of Locations Listed in 1980 in SC, GA, and NC")
 ```
 
 (@) Using the `gayguides` data, plot the number of religious institutions in each state.
 ```{r}
+religiousgg <- gayguides %>% filter(type=="Religious Institution") %>%
+group_by(state) %>%
+summarize(count = n())
 
+ggplot(religiousgg, aes(x=state, y=count)) + geom_col() + labs(x="State", y="Number of Religious Institutions", title="Number of Religious Institutions Listed in Each State")
 ```
 
 (@) Formulate a question based on a dataset of your choice. That question should be something that would be appropriately answered by a bar chart. What is the question you want to explore?
 
-<
+< Using almshouse_admissions, how many entries are there per each reason discharged? Could then be broken out into years to see if it changed over time, age to see if there is any correlation, etc.
 
 (@) Now write the code to answer that question and use comments (`#`) to explain your thinking as you go.
 ```{r}
+data(almshouse_admissions) #loading data
 
+dischargedaa <- almshouse_admissions %>% #creating a new dataframe with just the information I need for the plot
+  group_by(Reason.Discharged) %>%
+  summarize(count=n()) #gropuing by Reason.Discharged so I can have a total count of each instance
+
+ggplot(dischargedaa, aes(x=Reason.Discharged, y=count, fill=Reason.Discharged)) + geom_col() + labs(x="Reason Discharged", y="Total Number of Instances", title="Total of Discharge Reasons Given in AlmsHouse Admissision Records")
+#made reason discharged x so each bar would represent a separate reason, count being Y to see difference in totals, fill to make the bars more easily distinguishable, labelled for clarity
 ```
 
 ### Line Charts
