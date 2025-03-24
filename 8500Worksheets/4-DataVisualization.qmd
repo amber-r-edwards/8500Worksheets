@@ -251,7 +251,7 @@ After you finish creating the plot, write a short paragraph that explains what k
 library(DigitalMethodsData)
 data(charlestonManumissions)
 
-
+#need to view the data so I can decide on a question
 
 ```
 
