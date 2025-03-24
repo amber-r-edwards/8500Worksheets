@@ -103,17 +103,20 @@ ggplot(recreational.data, aes(x = population)) +
 
 (@) Use the Boston Women's voters dataset to create a histogram of the age of voters. 
 ```{r}
-
+library(DigitalMethodsData)
+data(BostonWomenVoters)
+ggplot(BostonWomenVoters, aes(x=Age)) + geom_histogram()
 ```
 
 (@) By default, `geom_histogram()` is choosing the number of bins. Can you change the number of bins or the bin width? (Hint: How might you look up the options for this function?)
 ```{r}
-
+#look up with ?geom_histogram()
+ggplot(BostonWomenVoters, aes(x=Age)) + geom_histogram(binwidth = 10)
 ```
 
 (@) Explain, what does changing the number of bins do? 
 
-> 
+> Changing the number of bins - overwridden by binwidth - allows you to display the data differently by grouping values together. By default, the number of bins is used as binwidth to cover the range of data, but changing it can better illustrate the stories in your data. 
 
 ### Barplots 
 
