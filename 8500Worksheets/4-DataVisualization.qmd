@@ -240,6 +240,10 @@ recavgworkers <- rec.workers %>%
 #error: could not find function "%>%" - i think just mad at me, will circle back
 #issue with getting the average for each type of worker - needed na.rm=TRUE
 
+#all together
+ggplot(recavgworkers, aes(x=year, y=average)) + geom_col() + facet_wrap(~type_of_worker) +labs(title="Average Number of Workers Over Time", subtitle="Faceted by Type", x="Year", y="Average Number of Workers")
+
+#split between paid and volunteer
 paidworkers <- recavgworkers %>%
   filter(type_of_worker =="female paid" | type_of_worker=="male paid")
 
