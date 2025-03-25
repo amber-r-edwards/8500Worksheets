@@ -294,8 +294,26 @@ ggplot(motivesovertime, aes(x=Year, y=count)) + geom_line() + facet_wrap(~Motive
 (@) Plot 3. For this one, try a different kind of plot. [Check out a useful gallery here.](https://github.com/regan008/DigitalMethodsData/blob/main/raw/RecreationData-Wide.csv)
 (For this week, avoid choosing a map. We'll talk more about maps and geographic data over the next two weeks.)
 ```{r}
+library(DigitalMethodsData)
+data(judges)
 
+#number of appointments by President
+presidentappointments <- judges %>%
+  group_by(Appointing.President..1.) %>% #limited to 1 because of main list being longest/avoid issue of separate columns
+  summarize(count=n())
+
+
+#dot plot - Top 50 ggplot Visualizations (https://r-statistics.co/Top50-Ggplot2-Visualizations-MasterList-R-Code.html)
+library(ggplot2)
+library(scales)
+theme_set(theme_bw())
+g <- ggplot(presidentappointments, aes(x=Appointing.President..1. , y=count))
+g + geom_count(col="tomato3", show.legend=FALSE) + labs(x="Appointing President", y="Total Number of Appointments", title="Count of Appointments by Each Presdient", subtitle="Only includes 1st Appointments") + theme(axis.txt.x = element_text(angle=90, hjust=1))
+#didn't pivot my labels like I wanted
 ```
 
 (@) Plot 3 explanation: 
->
+>For this plot I was wanting to view the number of appointments by President so I could see the compare the total number.
+>In theory I was wanting the total number of appointments, but because the columns in the original dataset is segmented between 1st-6th appointments (very few having more than 1 or 2), I made the decision to limit to first appointments just for the sake of it being the bulk of the data.
+>I don't love this dot plot, but I like how easy it is to see the different levels - other potential options I saw on the same site was the lollipop plot and the counts chart.
+>Further research would be driven by finding a way to include all appointments, or comparing down to a few presidents rather than all of them.
