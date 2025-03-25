@@ -232,13 +232,25 @@ ggplot(ggbytypes, aes(x=Year, y=count)) + geom_line() + facet_wrap(~type) + labs
 rec.workers <- read.csv("https://raw.githubusercontent.com/regan008/DigitalMethodsData/main/raw/RecreationData-Wide.csv")
 
 rec.workers <- rec.workers %>%
-  pivot_longer(-c(city:type_of_worker), names_to="year",
-  values_to="count")
+  pivot_longer(-c(city:type_of_worker), names_to="year", values_to="count")
 
 recavgworkers <- rec.workers %>%
   group_by(type_of_worker, year) %>%
-  summarize(average=mean(count), n=n())
+  summarize(average = mean(count, na.rm=TRUE))
 #error: could not find function "%>%" - i think just mad at me, will circle back
+#issue with getting the average for each type of worker - needed na.rm=TRUE
+
+paidworkers <- recavgworkers %>%
+  filter(type_of_worker =="female paid" | type_of_worker=="male paid")
+
+volunteerworkers <- recavgworkers %>%
+  filter(type_of_worker=="men volunteer" | type_of_worker=="volunteer" |type_of_worker=="women volunteer")
+
+#Paid Workers over Time
+ggplot(paidworkers, aes(x=year, y=average)) + geom_col() + facet_wrap(~type_of_worker) + labs(title="Average Number of Paid Workers Over Time", subtitle="Faceted by Gender", x="Year", y="Average Number of Workers")
+
+#Volunteer Workers over Time
+ggplot(volunteerworkers, aes(x=year, y=average)) + geom_col() + facet_wrap(~type_of_worker) + labs(title="Average Number of Volunteer Workers Over Time", subtitle="Faceted by Gender", x="Year", y="Average Number of Workers")
 ```
 
 ### Practice
