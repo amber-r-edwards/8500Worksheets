@@ -277,16 +277,19 @@ library(tidyr)
 #stackoverflow for date pivoting
 motivesovertime <- charlestonManumissions %>%
   mutate(Date= as.Date(Date, format="%d %B %Y")) %>%
-  separate(Date, into=c("Year", "Month", "Date"), "-") %>%
+  mutate(Year=year(Date)) %>%
   group_by(Motive, Year) %>%
-  summarize(count=n())
+  summarize(count=n(), .groups="drop")
 
-ggplot(motivesovertime, aes(x=Year, y=count)) + geom_line() + facet_wrap(~Motive) 
+ggplot(motivesovertime, aes(x=Year, y=count)) + geom_line() + facet_wrap(~Motive) + labs(x="Year", y="Total Number of Recorded Motives", title="Total Number of Recorded Motives Over Years - Faceted by Motive")
 
 ```
 
 (@) Plot 2 explanation: 
->
+>After making Plot 1, I was curious to see how the motives might have changed over time - looking at each motive individually. 
+>The plots are not has easy to read as I was hoping, primarily because some motives have very few instances within the data, and a similar issue as listed above with instances where multiple motives were given.
+>I do think it highlights the diffrences between the motives - though I think would be more beneficial if it was limited to just the motives that have instances over multiple years.
+>Additional research would certainly also need to look more closely at motives - comparing with the context to see what external factors might be in play.
 
 (@) Plot 3. For this one, try a different kind of plot. [Check out a useful gallery here.](https://github.com/regan008/DigitalMethodsData/blob/main/raw/RecreationData-Wide.csv)
 (For this week, avoid choosing a map. We'll talk more about maps and geographic data over the next two weeks.)
