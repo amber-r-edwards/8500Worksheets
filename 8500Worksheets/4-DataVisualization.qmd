@@ -250,16 +250,38 @@ After you finish creating the plot, write a short paragraph that explains what k
 ```{r}
 library(DigitalMethodsData)
 data(charlestonManumissions)
+#one question I thought of was seeing changes over time - but would need to be able to split the date into numeric/separated form for the function to recognize it in number order
 
-#need to view the data so I can decide on a question
+#Comparing the instances of each motive
+
+charlestonmotive <- charlestonManumissions %>%
+  group_by(Motive) %>%
+  summarize(count= n())
+
+ggplot(charlestonmotive, aes(x=Motive, y=count)) + geom_col() + labs(x="Motive Recorded", y="Number of Instances", title="Total Number of Instances of Each Motive in CHarlesnton Manumissions")
 
 ```
 
 (@) Plot 1 explanation: 
->
+>In this plot I'm observing which motives were recorded most often in the Charleston Manumissions - Moral being the most often recorded. 
+>A few complications are presented by this data, particularly that in some accounts multiple motives were listed which caused them to be recorded as a separate motive alltogether rather than an instance of each. 
+>This observation raises questions about what was implied by certain motives such as Sexual, Foreign, and Restricted - others being more self explanatory such as Self-Purchase and Outside Purchase. 
+>After viewing this plot, additional research could be inspired to look more closely at the individuals listed under the motives (owners or previously enslaved people).
 
 (@) Plot 2
 ```{r}
+#Additional question - motives over time
+library(dplyr)
+library(lubridate)
+library(tidyr)
+#stackoverflow for date pivoting
+motivesovertime <- charlestonManumissions %>%
+  mutate(Date= as.Date(Date, format="%d %B %Y")) %>%
+  separate(Date, into=c("Year", "Month", "Date"), "-") %>%
+  group_by(Motive, Year) %>%
+  summarize(count=n())
+
+ggplot(motivesovertime, aes(x=Year, y=count)) + geom_line() + facet_wrap(~Motive) 
 
 ```
 
