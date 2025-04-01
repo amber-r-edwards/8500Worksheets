@@ -287,7 +287,7 @@ tidy_sotu %>%
 ```
 (@) The code above is commented to help you follow it. Walk through the code above, and explain what each line does in your own words. If its a function you are unfamiliar with, look up the documentation.
 
-> 
+> First it counts each word by the president it is associated with, then it groups all of the entries by that president - combining those counts. Then it creates a new column called n_tot that holds the sum of the words per decoument, which can then be used in the term_freq function that will count the terms and use the total count to calculate the relative frequency in a given document. The dataframe is then arranged by term frequency, top_n(1) selects the top 1 row and prints the count of all rows (Inf overriding the limit of number of rows displayed so it will show all).
 
 ### TF-IDF
 
