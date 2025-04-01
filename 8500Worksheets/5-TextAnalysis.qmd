@@ -404,7 +404,13 @@ mb <- readtext(paste(getwd(), "/txt/*.txt", sep=""))
 ```
 
 (@) Add code chunks below and intersperse text to explain what you are doing and why.
+>Joining dataframes together
+```{r}
+mindbody <- full_join(mb, metadata, join_by())
+#file name and doc id not the same
+```
 
+> idea notes: use text from Mind and Body to look at how Progressive Era women's movements might impact topics; look at what changed between the Progressive Era and the 1920s; look for similarities between WWI and the Great Depression
 
 
 
@@ -414,3 +420,11 @@ mb <- readtext(paste(getwd(), "/txt/*.txt", sep=""))
 
 Write a text analysis script that explores and asks questions of the texts. At the end write a summary that analyzes the results you found. Be sure to rely on your historical knowledge. What can we learn from applying the strategies you've learned in this worksheet to analyze these documents?
 
+> Load Quest files and metadata
+> first need to save metadata as csv? - work through this later
+
+
+> Join dataframes together
+
+
+> idea notes: see how top td-idf scored words changed across the publication's run; 
