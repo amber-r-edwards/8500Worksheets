@@ -326,7 +326,19 @@ sotu.tf.idf %>% arrange(desc(tf_idf))
 (@) Pick a president who served more than one term. Filter the dataset and generate both raw word counts and tf-idf scores for that president. What words are most significant in each method? Why and what does that tell you about that president and their administration?  
 
 ```{r}
+LBJtf.idf <- tidy_sotu %>%
+  filter(president == "Lyndon B. Johnson") %>%
+  count(doc_id, word, sort = TRUE) %>%
+  bind_tf_idf(word, doc_id, n) %>%
+  arrange(desc(tf_idf))
+#Most significant words: vietnam, lack, incresases, century, recommendation. Tells us about the focus on Vietnam - reflecting the increase over second term - potentially the justifying increased presence, talking about moments of his term as unique to the century, etc.
 
+FDRtf.idf <- tidy_sotu %>%
+  filter(president == "Franklin D. Roosevelt") %>%
+  count(doc_id, word, sort = TRUE) %>%
+  bind_tf_idf(word, doc_id, n) %>%
+  arrange(desc(tf_idf))
+#Most significant words: autocracy, projects, popular, rulers, eighty. Tells us about the focus on WWII and combatting autocracy of rulers abroad, the increase of projects at home (both for work, war mobilizaiton and moral), and potentially the role of popularity in supporting a war effort.
 ```
 
 ### Co-Occurance
