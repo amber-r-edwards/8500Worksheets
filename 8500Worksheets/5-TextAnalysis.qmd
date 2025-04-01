@@ -196,7 +196,8 @@ tidy_sotu <- sotu_whole %>%
 ```
 (@) Before we move forward, take a minute a describe the chunk of code you just ran. What does each section do and how does it reflect the workflow for a topic modeling project? What are the important steps that are unique to topic modeling? 
 
->
+> The first through third sections recreates the dataframes and variables that we created previously so we have the metadata and texts to work with. The fourth section is taking the all of the metadata, arranging it by president, combining it with the text files, and making a new tibble. The fifth is taking that tibble, tokenizing the text by word, and removing the standard stop word list.
+> This reflects the workflow for a topic modeling project's first steps which are to prepare the corpus by tokenizing and defining the stop words to reduce the likelihood of the text throwing off the algorithm/program selected for a given project. Unique to topic modeling (maybe) would be the necessity to expand your list of stop words to improve/adjust the results - topic modeling also relies on distribution of words, or co-occurences across texts, to show the prevalence of a group of words (topic) within a given document - going steps further than just counting occurences in a specific document.
 
 
 The most basic kind of analysis we might be interested in doing is counting words. We can do that easily using the `count()` function: 
@@ -231,15 +232,32 @@ sotu.length <- tidy_sotu %>%
   group_by(president) %>% 
   summarize(avg_words = mean(n)) %>% 
   arrange(desc(avg_words))
+
+#The shortest was John Adams averaging 692 words, the longest was William Howard Taft with 9,126.5 words.
 ```
 
 (@) Think back to the metadata that we loaded about these speeches. Why are the STOU addresses for more modern president's shorter than others? (For example Bush vs Teddy Roosevelt)
 
->
+> George W. Bush averaged 2,158 and Teddy Roosevelt average 7,356 words. 
+> Looking at the metadata, one reason the addresses would be shorter for more modern presidents would be due to the "type" being a speech versus written. A written address would have every exact word, more content, and potentially longer explanations than a recorded speech where someone is going off of memory/notes, may choose to exclude sections, or speak in shorter/quicker styles and be influenced by audience reaction in the moment.
 
 (@) Filter the dataset to address this discrepancy and the recreate these statistics: 
 ```{r}
+#written addresses only
+written.sotu.length <- tidy_sotu %>%
+  filter(sotu_type == "written") %>%
+  count(president, doc_id) %>%
+  group_by(president) %>%
+  summarize(avg_words = mean(n))
 
+#speech addresses only
+speech.sotu.length <- tidy_sotu %>%
+  filter(sotu_type == "speech") %>%
+  count(president, doc_id) %>%
+  group_by(president) %>%
+  summarize(avg_words = mean(n))
+
+#using this - you would theorhetically have to exclude presidents who did both written and speeches because their averages would be split across both lists (ex:Carter)
 ```
 
 ### Term Frequency
