@@ -34,7 +34,7 @@ First, lets install the State of the Union package. This package contains text o
 ```{r}
 install.packages("sotu")
 library(sotu)
-u```
+```
 
 This package includes both the metadata about these speeches in `sotu_meta` and the texts themselves in `sotu_texts`. Lets first look at the metadata associated with this package. 
 
@@ -415,7 +415,19 @@ mindbody <- full_join(metadata, mb, join_by("Filename" == "filename"))
 #file name and doc id not the same - paste and mutate, amend column together
 ```
 
-> idea notes: use text from Mind and Body to look at how Progressive Era women's movements might impact topics; look at what changed between the Progressive Era and the 1920s; look for similarities between WWI and the Great Depression
+> Pre-processing
+```{r}
+mindbody <- mindbody %>%
+  unnest_tokens(word, text) 
+
+#chose by word because it would give me the largest corpus (even after stop words), and I'm currently unaware of phrases that would require me to use bigrams (could change for application questions)
+
+mindbody <- mindbody %>%
+  anti_join(stop_words)
+
+```
+
+> idea notes: use text from Mind and Body to look at how Progressive Era women's movements might impact themes of publication; look at what changed between the Progressive Era and the 1920s; look for similarities between WWI and the Great Depression
 
 
 
