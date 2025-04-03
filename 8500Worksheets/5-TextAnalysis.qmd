@@ -406,8 +406,13 @@ mb <- readtext(paste(getwd(), "/txt/*.txt", sep=""))
 (@) Add code chunks below and intersperse text to explain what you are doing and why.
 >Joining dataframes together
 ```{r}
-mindbody <- full_join(mb, metadata, join_by())
-#file name and doc id not the same
+library(tools)
+mb <- mb %>%
+  separate(doc_id, into = c("MB", "year", "month"), sep = "_", remove = TRUE ) %>%
+  unite(filename, c(year, month), sep = "_")
+
+mindbody <- full_join(metadata, mb, join_by("Filename" == "filename"))
+#file name and doc id not the same - paste and mutate, amend column together
 ```
 
 > idea notes: use text from Mind and Body to look at how Progressive Era women's movements might impact topics; look at what changed between the Progressive Era and the 1920s; look for similarities between WWI and the Great Depression
