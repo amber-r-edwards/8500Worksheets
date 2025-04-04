@@ -424,7 +424,14 @@ mindbody <- mindbody %>%
 
 mindbody <- mindbody %>%
   anti_join(stop_words)
+head(mindbody)
+#there are a lot of numbers present - going to take them out to make corpus smaller/cleaner
+custom_stopwords <- stop_words %>%
+  add_row(word = as.character(0:9), lexicon = NA)
 
+mindbody <- mindbody %>%
+  anti_join(custom_stopwords)
+head(mindbody)
 ```
 
 > idea notes: use text from Mind and Body to look at how Progressive Era women's movements might impact themes of publication; look at what changed between the Progressive Era and the 1920s; look for similarities between WWI and the Great Depression
