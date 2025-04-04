@@ -426,11 +426,16 @@ mindbody <- mindbody %>%
   anti_join(stop_words)
 head(mindbody)
 #there are a lot of numbers present - going to take them out to make corpus smaller/cleaner
-custom_stopwords <- stop_words %>%
-  add_row(word = as.character(0:9), lexicon = NA)
+#custom_stopwords <- stop_words %>%
+#  add_row(word = as.character(0:9), lexicon = NA)
 
+#mindbody <- mindbody %>%
+#  anti_join(custom_stopwords)
+#head(mindbody)
+
+#filtering out numbers
 mindbody <- mindbody %>%
-  anti_join(custom_stopwords)
+  filter(is.na(as.numeric(word)))
 head(mindbody)
 ```
 
