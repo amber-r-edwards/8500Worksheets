@@ -514,7 +514,7 @@ Write a text analysis script that explores and asks questions of the texts. At t
 ```{r}
 #load text files - one per issue
 #file path
-questtext_dir <- "questfiles"
+questtext_dir <- "HIST8500/questfiles"
 #get all file names in directory
 questfilenames <- list.files(questtext_dir, pattern = "*.txt", full.names = FALSE)
 #strip off .txt for names
@@ -522,9 +522,11 @@ library(tools)
 questfilenamesstripped <-
   file_path_sans_ext(questfilenames)
 
-#create dataframe
+#create dataframe - NOTES IN JOURNAL FOR FUNCTIONS
 questtextdata <- data.frame(
-  
+  file_name = basename(questfilenames),
+  content = sapply(questfilenames, function(file) paste(readLines(file, warn = FALSE), collapse = " ")),
+  stringsAsFactors = FALSE
 )
 
 #read metadata
