@@ -417,14 +417,14 @@ mindbody <- full_join(metadata, mb, join_by("Filename" == "filename"))
 
 > Pre-processing
 ```{r}
-mindbody <- mindbody %>%
+tidy_mindbody <- mindbody %>%
   unnest_tokens(word, text) 
 
 #chose by word because it would give me the largest corpus (even after stop words), and I'm currently unaware of phrases that would require me to use bigrams (could change for application questions)
 
-mindbody <- mindbody %>%
+tidy_mindbody <- tidy_mindbody %>%
   anti_join(stop_words)
-head(mindbody)
+head(tidy_mindbody)
 #there are a lot of numbers present - going to take them out to make corpus smaller/cleaner
 #custom_stopwords <- stop_words %>%
 #  add_row(word = as.character(0:9), lexicon = NA)
@@ -434,14 +434,36 @@ head(mindbody)
 #head(mindbody)
 
 #filtering out numbers
-mindbody <- mindbody %>%
+tidy_mindbody <- tidy_mindbody %>%
   filter(is.na(as.numeric(word)))
-head(mindbody)
+head(tidy_mindbody)
 ```
 
-> idea notes: use text from Mind and Body to look at how Progressive Era women's movements might impact themes of publication; look at what changed between the Progressive Era and the 1920s; look for similarities between WWI and the Great Depression
+> idea notes: if there were drastic changes in length over time; look at what changed between the Progressive Era and the 1920s; look for similarities between WWI and the Great Depression
+
+>First just want to look at amount of words over time
+```{r}
+#top count of words
+count_mindbody <- tidy_mindbody %>%
+  count(word, sort = TRUE)
+head(count_mindbody)
+
+countovertime <- tidy_mindbody %>%
+  select(Year, word) %>%
+  group_by(Year) %>%
+  summarize(count = n())
+
+library(ggplot2)
+ggplot(countovertime, aes(x=Year, y=count)) + geom_col() + labs(x = "Year", y = "Number of Words Printed", title = "Number of words printed per year")
+#from this I can see the length peaked in the intrawar period - would potentially direct me to look into periods of longer publications during or after WWI
+```
+
+>Compare most used words in the progressive era against most used words in the 1920s
+```{r}
+# i think I could achieve this by getting the averages from the years it was published during the Progressive Era and then in the 1920s - visualize in two separate graphs, maybe facet?
 
 
+```
 
 
 
