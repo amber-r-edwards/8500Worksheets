@@ -458,14 +458,31 @@ ggplot(countovertime, aes(x=Year, y=count)) + geom_col() + labs(x = "Year", y = 
 #from this I can see the length peaked in the intrawar period - would potentially direct me to look into periods of longer publications during or after WWI
 ```
 
->Compare most used words in the progressive era against most used words in the 1920s
+>Question: What does comparing the most used words in the progressive era against most used words in the 1920s show?
+>Result: Though limited by some of the main themes (physical, school, education, etc.), there are a few notable changes from the Progressive Era content to the 1920s that seem to reflect the context of WWI. In the 1920s top 10 list, health, forward, children, and arms appear - potentially relating to the realization after WWI that there was a malnourishment crisis in the US that affected the population healthy enough to be conscripted to military service. WWI as an experience that brought the US into a more active military presence abroad would emphasize a need to improve the health and strength of children in the case of needing to amass another army in the future. 
 ```{r}
 # i think I could achieve this by getting the averages from the years it was published during the Progressive Era and then in the 1920s - visualize in two separate graphs, maybe facet?
 
+#first need to determine years - starts 1895 - Progressive Era years to use: 1895-1919
+progressivemindbody <- tidy_mindbody %>%
+  filter(Year >= 1895 & Year <= 1919) %>%
+  group_by(Year) %>%
+  summarize(count = n()) 
+#okay that just gave me the count, I want the top words of that period
+progressivemindbody <- tidy_mindbody %>%
+  filter(Year >= 1895 & Year <= 1919) %>%
+  count(word, sort = TRUE)
 
+#look at top 10 to try and hopefully see more than just the recurring themes/more opportunity for changes over time
+
+#top words: physical, school, left, training, digitized, exercise, time, body, schools, exercises
+twentiesmindbody <- tidy_mindbody %>%
+  filter(Year >= 1920 & Year <= 1929) %>%
+  count(word, sort = TRUE)
+#top words: physical, left, school, education, health, forward, digitized, children, time, arms
 ```
 
-
+>For these questions to be more affective, I would potentially need to customize stop words to take out some of the obvious recurring themes due to the nature of the text itself - or exchange basic text analysis with topic modeling or something more advanced to really examine the content across the issues.
 
 (@) Choose one of the datasets from this repository or use one of your own: https://github.com/regan008/8510-TextAnalysisData. Note that there are both zip files with .txt files as well as separate metadata files for each publication in this repo. 
 
