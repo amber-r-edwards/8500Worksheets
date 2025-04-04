@@ -87,3 +87,8 @@ for (i in seq_along(questmetadata$filename)) {
         print(paste("file", old_file_path, "does not exist"))
     }
 }
+
+write.csv() #look at options - create script and keep for future use
+
+#writing csv from metadata data frame created in scripting
+write.csv(questmetadata, file = "questmetadata.csv")
