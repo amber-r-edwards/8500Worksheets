@@ -484,6 +484,28 @@ twentiesmindbody <- tidy_mindbody %>%
 
 >For these questions to be more affective, I would potentially need to customize stop words to take out some of the obvious recurring themes due to the nature of the text itself - or exchange basic text analysis with topic modeling or something more advanced to really examine the content across the issues.
 
+>Question: What would the TD-IDF show using the same periodization?
+>Proves the point from class about TF-IDF not always being useful (especially with Progressive words). Similar conclusions could be drawn from the Twenties list as above - assuming meas is the root of measles and seeing other health related terms like sewage, epinephrin and fig (if root of figure).
+```{r}
+tdidfprogressive <- tidy_mindbody %>%
+  filter(Year >= 1895 & Year <= 1919) %>%
+  count(Filename, word, sort = TRUE) %>%
+  bind_tf_idf(word, Filename, n) %>%
+  arrange(desc(tf_idf))
+head(tdidfprogressive)
+#words don't make sense
+#top words: tierce, quarte, fw, tierce, tierce, quarte, quarte, kg, quarte, tierce
+
+tdidftwenties <- tidy_mindbody %>%
+  filter(Year >= 1920 & Year <= 1929) %>%
+  count(Filename, word, sort = TRUE) %>%
+  bind_tf_idf(word, Filename, n) %>%
+  arrange(desc(tf_idf))
+head(tdidftwenties)
+#words are a bit more legible but still don't makes sense
+#top words: cts, meas, cts, bd, gangs, sewage, meas, meas, epinephrin, fig
+```
+
 (@) Choose one of the datasets from this repository or use one of your own: https://github.com/regan008/8510-TextAnalysisData. Note that there are both zip files with .txt files as well as separate metadata files for each publication in this repo. 
 
 Write a text analysis script that explores and asks questions of the texts. At the end write a summary that analyzes the results you found. Be sure to rely on your historical knowledge. What can we learn from applying the strategies you've learned in this worksheet to analyze these documents?
