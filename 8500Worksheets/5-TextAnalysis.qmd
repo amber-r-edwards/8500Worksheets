@@ -511,7 +511,26 @@ head(tdidftwenties)
 Write a text analysis script that explores and asks questions of the texts. At the end write a summary that analyzes the results you found. Be sure to rely on your historical knowledge. What can we learn from applying the strategies you've learned in this worksheet to analyze these documents?
 
 > Load Quest files and metadata
-> first need to save metadata as csv? - work through this later
+```{r}
+#load text files - one per issue
+#file path
+questtext_dir <- "questfiles"
+#get all file names in directory
+questfilenames <- list.files(questtext_dir, pattern = "*.txt", full.names = FALSE)
+#strip off .txt for names
+library(tools)
+questfilenamesstripped <-
+  file_path_sans_ext(questfilenames)
+
+#create dataframe
+questtextdata <- data.frame(
+  
+)
+
+#read metadata
+questmetadata <- read.csv("questmetadata.csv")
+
+```
 
 
 > Join dataframes together
