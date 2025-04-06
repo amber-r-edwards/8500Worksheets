@@ -514,10 +514,10 @@ Write a text analysis script that explores and asks questions of the texts. At t
 ```{r}
 #load text files - one per issue
 #file path
-#questtext_dir <- "HIST8500/questfiles"
+questtext_dir <- "questfiles"
 
 #get all file names in directory
-#questfilenames <- list.files(questtext_dir, pattern = "*.txt", full.names = FALSE)
+questfilenames <- list.files(questtext_dir, pattern = "*.txt", full.names = FALSE)
 
 #strip off .txt for names
 #library(tools)
@@ -537,15 +537,22 @@ Write a text analysis script that explores and asks questions of the texts. At t
 questtextdata <- readtext(paste(getwd(), "/questfiles/*.txt", sep=""))
 
 #add column with filenames without extensions
-
+questtextdata <- questtextdata %>%
+  mutate(file_name = file_path_sans_ext(questfilenames)) %>%
+  relocate(file_name, .before = doc_id)
 
 #read metadata
 questmetadata <- read.csv("questmetadata.csv")
-
 ```
 
-
 > Join dataframes together
+```{r}
+quest <- full_join(questmetadata, questtextdata, join_by("id" == "file_name"))
+```
 
+> Pre-processing
+```{r}
+
+```
 
 > idea notes: see how top td-idf scored words changed across the publication's run; 
