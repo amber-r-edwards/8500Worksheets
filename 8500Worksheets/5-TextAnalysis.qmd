@@ -650,3 +650,36 @@ wordpairs_quest %>%
   theme_void()
 #gave me a wildly unhelpful visualization - one big ball of red with dots on it rather than showing any lines of connection
 ```
+
+> Question: What do the TF-IDF scores reveal? How do the results correlate with the patterns previsously observed? Any new observations?
+> Results:
+> Over the entire corpus - some of them are unintelligible - labour points to a larger discussion of womens labor that could be in the context of other organizations (aligning with previous question of discussion of origins of feminism in emerging scholarship), s.f could be indicating San Francisco as it is used in zines which could come from plugging hubs of activity/groups advertising events or organizations, and dionysus potentially presents an interesting question about the usage of mythology within feminist discourse and would need closer reading (could be from one really long story/entry).
+> Comparing peak (1974-1978) and drop off (1979-1982) periods - similar results as seen with previous corpus example where some of it is unintelligible, leading me to question utility of the analysis overall. Potential questions that emerge: what does the presence of s.f (if it means San Francisco) in the peak/early issues but not the drop off/later issues say about the dissemination of feminist activity nationwide? It seems like the early issues have a focus on the more theorhetical discussions of feminism with journalism and labour, whereas the later issues seem to focus on specific experiences with farm, waitress, and boycott -  could this show a change in audience/demand? 
+```{r}
+#over the entire corpus
+tfidf_quest <- tidy_quest %>%
+  count(id, word, sort = TRUE) %>%
+  bind_tf_idf(word, id, n) %>%
+  arrange(desc(tf_idf))
+head(tfidf_quest)
+#top 5 words: eh, labour, s. f., fen, dionysus, jc
+
+#comparing peak period (1974-1978) and drop off period (1979-1982)
+peakquesttdidf <- tidy_quest %>%
+  filter(date >= 1974 & date <= 1978) %>%
+  count(id, word, sort = TRUE) %>%
+  bind_tf_idf(word, id, n) %>%
+  arrange(desc(tf_idf))
+head(peakquesttdidf)
+#top 5 words: stilps, cluw, s.f, extraction, journalism, labour
+
+dropoffquesttfidf <- tidy_quest %>%
+  filter(date >= 1979 & date <= 1982) %>%
+  count(id, word, sort = TRUE) %>%
+  bind_tf_idf(word, id, n) %>%
+  arrange(desc(tf_idf))
+head(dropoffquesttfidf)
+#top 5 words: eh, jc, farm, waitress, boycott, tip
+```
+
+>Overall I'm not sure how my more complicated analysis models guided me to a direct answer to any question, but I think each - especially the more simplistic counts - provided me with questions to guide closer reading that I might not have noticed without the analysis at a broad scale or the visualization of the results.
