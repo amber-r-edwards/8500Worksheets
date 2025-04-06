@@ -514,20 +514,30 @@ Write a text analysis script that explores and asks questions of the texts. At t
 ```{r}
 #load text files - one per issue
 #file path
-questtext_dir <- "HIST8500/questfiles"
+#questtext_dir <- "HIST8500/questfiles"
+
 #get all file names in directory
-questfilenames <- list.files(questtext_dir, pattern = "*.txt", full.names = FALSE)
+#questfilenames <- list.files(questtext_dir, pattern = "*.txt", full.names = FALSE)
+
 #strip off .txt for names
-library(tools)
-questfilenamesstripped <-
-  file_path_sans_ext(questfilenames)
+#library(tools)
+#questfilenamesstripped <-
+#  file_path_sans_ext(questfilenames)
 
 #create dataframe - NOTES IN JOURNAL FOR FUNCTIONS
-questtextdata <- data.frame(
-  file_name = basename(questfilenames),
-  content = sapply(questfilenames, function(file) paste(readLines(file, warn = FALSE), collapse = " ")),
-  stringsAsFactors = FALSE
-)
+#questtextdata <- data.frame(
+#  file_name = basename(questfilenames),
+#  content = sapply(questfilenames, function(file) paste(readLines(file, warn = FALSE), collapse = " ")),
+#  stringsAsFactors = FALSE
+#)
+
+#was massively overthinking it ^
+
+#read text from directory into dataframe
+questtextdata <- readtext(paste(getwd(), "/questfiles/*.txt", sep=""))
+
+#add column with filenames without extensions
+
 
 #read metadata
 questmetadata <- read.csv("questmetadata.csv")
