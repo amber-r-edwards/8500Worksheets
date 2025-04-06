@@ -552,6 +552,24 @@ quest <- full_join(questmetadata, questtextdata, join_by("id" == "file_name"))
 
 > Pre-processing
 ```{r}
+tidy_quest <- quest %>%
+  unnest_tokens(word, text) %>%
+  anti_join(custom_stop_words) %>%
+  filter(is.na(as.numeric(word))) %>%
+  select(id, title, volume, date, word)
+head(tidy_quest)
+
+#realized that it would probably be helpful to add a few things to the list of stop words because of headings and such 
+
+custom_stop_words <- stop_words %>%
+  add_row(word = "quest", lexicon = NA) %>%
+  add_row(word = "quarterly", lexicon = NA)
+
+#now from the head() I can see more varied results off the bat - could make argument that words like feminism/feminist will skew things but unsure it would be necessary to remove since I want to look at topics/things discussed
+```
+
+>First I just want to look as some basic counts
+```{r}
 
 ```
 
