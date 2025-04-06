@@ -563,7 +563,15 @@ head(tidy_quest)
 
 custom_stop_words <- stop_words %>%
   add_row(word = "quest", lexicon = NA) %>%
-  add_row(word = "quarterly", lexicon = NA)
+  add_row(word = "quarterly", lexicon = NA) %>%
+  add_row(word = "woman", lexicon = NA) %>%
+  add_row(word = "women", lexicon = NA) %>%
+  add_row(word = "women's", lexicon = NA) %>%
+  add_row(word = "woman's", lexicon = NA) %>%
+  add_row(word = "feminist", lexicon = NA) %>%
+  add_row(word = "feminists", lexicon = NA) %>%
+  add_row(word = "feminism", lexicon = NA)
+#intentionally did not add plural of feminism to see if there is any discussion of plural feminisms
 
 #now from the head() I can see more varied results off the bat - could make argument that words like feminism/feminist will skew things but unsure it would be necessary to remove since I want to look at topics/things discussed
 ```
@@ -597,4 +605,27 @@ ggplot(countovertime, aes(x=date, y=count)) + geom_col() + labs(x = "Year of Pub
 #shows more clearly a drop off in 1975 - resurgence in 1976, drop off in 1977 (not as drastic) and spike again in 1978 before dropping from 1979 onward
 ```
 
-> idea notes: see how top td-idf scored words changed across the publication's run; 
+> Now I want to see what the top words are for each year
+> Question: How different are the topics for the first year(1974), the last peak year (1978), the drop off (1979), and the last year (1982)? What do the differences show?
+>Result:
+>(organized by term frequency)
+> 1974 - power, class, change, movement, political
+> 1978 - people, power, process, political, time
+> 1979 - theory, rape, black, lesbian, white
+> 1982 - black, white, racism, sexism, political
+> What stands out most to me is that there seems to be an increase in specificity over time - the first edition using more broader topics most likely in defining the movement and scope of the publicaitons, and the later editions focusing on more specific social positions that would define someone's relationship to the broader topics highlighted in the 1974 issues. As women's studies scholarship was expanding in the 1970s, I would be curious if this trend is inspired by increased discussion of intersectionality and the paths to feminism via the civil rights movement and new left linking racism and sexism that are being analyzed in early women's history scholarship (Evans - Personal Politics?).
+> Comparing to zines, I also wonder if the publishers of Quest ran into a similar issue as "It Ain't Me Babe" where overtime there were fewer entries sent in - though in Quest's case I wonder if it would be moreso due to scholars of women trying to break into more "traditional" journals instead of setting their scholarship aside separately, whereas Babe and zines more broadly faced the issue of contributers aging out of the organizations largely around higher education.
+```{r}
+#took logic from above example with presidents
+topwordsbydate <- tidy_quest %>%
+  count(date, word)  %>%  # count n for each word
+  group_by(date) %>% 
+  mutate(n_tot = sum(n), # count total number of words per doc
+         term_freq = n/n_tot) %>% 
+  arrange(desc(date)) %>% # sort by date
+  top_n(5) %>%  # take the top 5 for each year
+  print(n = Inf) # print all rows
+#from this I can see that women and feminist make up most of the list - adding to stopwords
+
+#after adding stopwords the words present are much more telling of the topics within each year
+```
