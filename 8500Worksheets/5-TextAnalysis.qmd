@@ -629,3 +629,24 @@ topwordsbydate <- tidy_quest %>%
 
 #after adding stopwords the words present are much more telling of the topics within each year
 ```
+
+> Curious what results I would get with co-occurence
+> Potentially an error with the text, but the highest co-occurence number is 20 and it is showing that almost every word is right at 20 so the network graph is unable to detect the connections in any inteligible way. Copilot says I used the pairwise_count() correctly, so topic modeling may be required here to group things into clusters and actually be able to see the connections.
+```{r}
+library(widyr)
+wordpairs_quest <- tidy_quest %>%
+  pairwise_count(word, id, sort = TRUE)
+
+head(wordpairs_quest)
+#since I can't tell what the highest count is I'm going to start with 200 and see what that gets me - taking logic from above example
+#plot was blank - head(wordpairs_quest) showed me 20 but I assumed that was not the highest, will try that - def was because I asked it to sort it
+wordpairs_quest %>%
+  filter(n >= 50) %>% #only word pairs that occur 200 or more times
+  graph_from_data_frame() %>% # convert to graph
+  ggraph(layout = "fr") + #place nodes according to the force-directed algorithm of Fruchterman and Reingold
+  geom_edge_link(aes(edge_alpha = n, edge_width = n), edge_colour = "tomato") +
+  geom_node_point(size = 5) +
+  geom_node_text(aes(label = name), repel = TRUE, point.padding = unit(0.2, "lines")) +
+  theme_void()
+#gave me a wildly unhelpful visualization - one big ball of red with dots on it rather than showing any lines of connection
+```
