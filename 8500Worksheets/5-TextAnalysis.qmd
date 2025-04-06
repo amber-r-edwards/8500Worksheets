@@ -569,8 +569,32 @@ custom_stop_words <- stop_words %>%
 ```
 
 >First I just want to look as some basic counts
+>Results: Counting the words over time raises more questions than it answers, but particularly the visualization of drastic spikes and drops in length before a steadying out after 1979 leads to questions about participation/demand changing over time. From here I would want to invesigate different content in the spike years versus the shorter years.
 ```{r}
+#top count of words across all
+count_quest <- tidy_quest %>%
+  count(word, sort = TRUE)
+head(count_quest)
+#top 5: women, feminist, women's, power, class, political
 
+#total count of words separated by volume
+countovertime <- tidy_quest %>%
+  select(volume, word) %>%
+  group_by(volume) %>%
+  summarize(count = n()) %>%
+  arrange(desc(volume))
+#not very useful because it doesn't descencd the volumes properly - lack of uniform arrangement (would require a lot more cleaning than I'm wanting to do at present)
+
+#total count of words separated by year
+countovertime <- tidy_quest %>%
+  select(date, word) %>%
+  group_by(date) %>%
+  summarize(count = n()) %>%
+  arrange(desc(count))
+#accounting for outlier of the volume with the spring, 1974 being separated - shows that the first year in print had the most words
+#visualize
+ggplot(countovertime, aes(x=date, y=count)) + geom_col() + labs(x = "Year of Publication", y= "Total Number of Words Across Quarterly Publications", title = "Total Number of Words in Quest Women's Quarterly by Year of Publication")
+#shows more clearly a drop off in 1975 - resurgence in 1976, drop off in 1977 (not as drastic) and spike again in 1978 before dropping from 1979 onward
 ```
 
 > idea notes: see how top td-idf scored words changed across the publication's run; 
