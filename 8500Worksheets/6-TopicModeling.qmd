@@ -214,6 +214,7 @@ mbtopterms %>%
 >25 topics presents some coherent topics but many that are unintelligible from the top 5 words, going to bump up to 35 to see
 > 35 is more unintelligible and makes the presence of NAs more clear - wondering if 25 was better but needs the stop words adjusted (next question) - going to try and circle back around
 > *after changing the stopwords* 25 still seems about the same, most discernable topic is 9 that seems to be about finances (ownership, subscribed, notary, mortgages, bondholders) and some of the "NA"s seem to have remained
+>STOPPING POINT - try messing with alpha number next
 
 (@) What happens if you create a custom stopword list? How does this change the model?
 ```{r}
