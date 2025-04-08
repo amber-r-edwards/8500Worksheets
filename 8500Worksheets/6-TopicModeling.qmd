@@ -188,11 +188,45 @@ mb.dtm <- mbtidywords %>%
   cast_dtm(Filename, word, n)
 ```
 
->
+>train LDA model
+```{r}
+mb.lda <- LDA(mb.dtm, k = 25, control = list(seed = 86753), method = "Gibbs", alpha = 0.5)
+```
+
+>look at topics
+```{r}
+mbtopics <- tidy(mb.lda, matrix = "beta")
+head(mbtopics)
+
+mbtopterms <- mbtopics %>%
+  arrange(desc(beta)) %>%
+  group_by(topic) %>% slice(1:5)
+head(mbtopterms)
+
+mbtopterms %>%
+  mutate(term = reorder_within(term, beta, topic)) %>%
+  ggplot(aes(beta, term, fill = factor(topic))) +
+  geom_col(show.legend = FALSE) +
+  facet_wrap(~ topic, scales = "free")
+```
+
+>Results:
+>25 topics presents some coherent topics but many that are unintelligible from the top 5 words, going to bump up to 35 to see
+> 35 is more unintelligible and makes the presence of NAs more clear - wondering if 25 was better but needs the stop words adjusted (next question) - going to try and circle back around
+> *after changing the stopwords* 25 still seems about the same, most discernable topic is 9 that seems to be about finances (ownership, subscribed, notary, mortgages, bondholders) and some of the "NA"s seem to have remained
 
 (@) What happens if you create a custom stopword list? How does this change the model?
 ```{r}
+#adding to stopwords: NA
+mbstopwords <- stop_words %>%
+  add_row(word = "NA", lexicon = NA)
 
+mbtidywhole <- mindbody_whole %>%
+  unnest_tokens(word, text) %>%
+  anti_join(mbstopwords)
+
+mbtidywhole <- mbtidywhole %>% filter(!grepl("[0-9]", word))
+#go back and run other set up for LDA - LDA training - then code to visualize (and setting LDA, k = 25)
 ```
 
 (@) Can you create a topic model for just the documents in the 1920s? How does that change the model? 
