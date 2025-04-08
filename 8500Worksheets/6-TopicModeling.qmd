@@ -190,7 +190,7 @@ mb.dtm <- mbtidywords %>%
 
 >train LDA model
 ```{r}
-mb.lda <- LDA(mb.dtm, k = 25, control = list(seed = 86753), method = "Gibbs", alpha = 0.5)
+mb.lda <- LDA(mb.dtm, k = 25, control = list(seed = 86753), method = "Gibbs", alpha = 0.75)
 ```
 
 >look at topics
@@ -214,7 +214,8 @@ mbtopterms %>%
 >25 topics presents some coherent topics but many that are unintelligible from the top 5 words, going to bump up to 35 to see
 > 35 is more unintelligible and makes the presence of NAs more clear - wondering if 25 was better but needs the stop words adjusted (next question) - going to try and circle back around
 > *after changing the stopwords* 25 still seems about the same, most discernable topic is 9 that seems to be about finances (ownership, subscribed, notary, mortgages, bondholders) and some of the "NA"s seem to have remained
->STOPPING POINT - try messing with alpha number next
+>Changed alpha to .25 (lower = dominated by few topics) - still maintained topic 9, few others are discernable, 3 seeming to be about implementation of exercises via a committee? 
+>Changed alpha to .75 (higher = blend of topics) - still maintained topic 9, starting to wonder if my chages are actually doing anything?
 
 (@) What happens if you create a custom stopword list? How does this change the model?
 ```{r}
@@ -228,6 +229,8 @@ mbtidywhole <- mindbody_whole %>%
 
 mbtidywhole <- mbtidywhole %>% filter(!grepl("[0-9]", word))
 #go back and run other set up for LDA - LDA training - then code to visualize (and setting LDA, k = 25)
+
+#creating a custom stopword list changes the model by taking out words that could impact a number of topics depending on how prolific it is throughout the corpus - you typically don't want to use too many additional stopwords but for incoherent words or values it can still be beneficial
 ```
 
 (@) Can you create a topic model for just the documents in the 1920s? How does that change the model? 
