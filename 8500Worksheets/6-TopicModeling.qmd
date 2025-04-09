@@ -235,23 +235,26 @@ mbtidywhole <- mbtidywhole %>% filter(!grepl("[0-9]", word))
 
 (@) Can you create a topic model for just the documents in the 1920s? How does that change the model? 
 ```{r}
-mb.metadata <- read.csv("https://raw.githubusercontent.com/regan008/8510-TextAnalysisData/main/mb-metadata.csv")
-mbfile_paths <- system.file("txt/")
-mb_texts <- readtext(paste("txt/", "*.txt", sep=""))
-
-mindbody_whole <- full_join(mb.metadata, mb_texts, by = c("Filename" = "doc_id")) %>% as_tibble()
-
-mbtidywhole <- mindbody_whole %>%
-  unnest_tokens(word, text) %>%
-  anti_join(stop_words)
-
-mbtidywhole <- mbtidywhole %>% filter(!grepl("[0-9]", word))
-
 #create 1920s specific dataframe of text
 mindbody1920s <- mindbody_whole %>%
   filter(Year <= 1929 & Year >= 1920)
 
 #no text within the dataframe?
+
+#try doing the filter earlier - same results of text not showing up in dataframe
+#mb.metadata <- read.csv("https://raw.githubusercontent.com/regan008/8510-TextAnalysisData/main/mb-metadata.csv")
+#mbfile_paths <- system.file("txt/")
+#mb_texts <- readtext(paste("txt/", "*.txt", sep=""))
+
+#mindbody_whole <- full_join(mb.metadata, mb_texts, by = c("Filename" = "doc_id")) %>% 
+#  filter(Year <= 1929 & Year >= 1920) %>%
+#  as_tibble()
+
+#mbtidywhole <- mindbody_whole %>%
+#  unnest_tokens(word, text) %>%
+#  anti_join(stop_words)
+
+#mbtidywhole <- mbtidywhole %>% filter(!grepl("[0-9]", word))
 ```
 
 (@) Choose one of the datasets from this repository or use one of your own: https://github.com/regan008/8510-TextAnalysisData. Note that there are both zip files with .txt files as well as separate metadata files for each publication in this repo. 
