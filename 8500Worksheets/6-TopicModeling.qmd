@@ -235,6 +235,18 @@ mbtidywhole <- mbtidywhole %>% filter(!grepl("[0-9]", word))
 
 (@) Can you create a topic model for just the documents in the 1920s? How does that change the model? 
 ```{r}
+mb.metadata <- read.csv("https://raw.githubusercontent.com/regan008/8510-TextAnalysisData/main/mb-metadata.csv")
+mbfile_paths <- system.file("txt/")
+mb_texts <- readtext(paste("txt/", "*.txt", sep=""))
+
+mindbody_whole <- full_join(mb.metadata, mb_texts, by = c("Filename" = "doc_id")) %>% as_tibble()
+
+mbtidywhole <- mindbody_whole %>%
+  unnest_tokens(word, text) %>%
+  anti_join(stop_words)
+
+mbtidywhole <- mbtidywhole %>% filter(!grepl("[0-9]", word))
+
 #create 1920s specific dataframe of text
 mindbody1920s <- mindbody_whole %>%
   filter(Year <= 1929 & Year >= 1920)
@@ -242,22 +254,12 @@ mindbody1920s <- mindbody_whole %>%
 #no text within the dataframe?
 ```
 
-(@) Now, lets return to the Buffalo Bill data from last week. You should be able to use topic modeling to address two of the research questions provided:
+(@) Choose one of the datasets from this repository or use one of your own: https://github.com/regan008/8510-TextAnalysisData. Note that there are both zip files with .txt files as well as separate metadata files for each publication in this repo. 
 
-* Can we detect some change over time in promotion language and reception language (marketing and reviewing)? Were there types of characters, scenarios, action promised in promotional material and/or noted in reviews earlier vs later?
-* What can be gleaned from the items tagged as extraneous as far as topics? These are news items that are somehow related to BBWW. Crime, finances, celebrity, etc.
+Write a topic model that explores and asks questions of the texts. At the end write a summary that analyzes the results you found. Be sure to rely on your historical knowledge. What can we learn from applying the strategies you've learned in this worksheet to analyze these documents?
 
-To analyze this you should first generate a topic model for the buffalo bill data. Play with the number of topics until you find a number that feels about right for the dataset. I am guessing it'll be in the 8-15 range but you'll need to play with it to see what number gives you the best fit. 
 
-To address the first research question, you'll need to plot topics over time. I would create three models, one for all of the data, one for promotion, and one for reception. What do we learn by doing this?
-
-For the second, a general topic model of the extraneous articles will be needed. 
-
-Add code blocks below as necessary.
 
 (@) Finally, when you are all done. Write up your findings. What research question did you focus on and what did you learn? 
 
-
-
-**This was the final worksheet for this class. You did it - you learned to code in R! Congrats!**
 
