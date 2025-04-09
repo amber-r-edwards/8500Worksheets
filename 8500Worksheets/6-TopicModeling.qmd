@@ -242,6 +242,7 @@ mindbody1920s <- mindbody_whole %>%
 #no text within the dataframe?
 
 #try doing the filter earlier - same results of text not showing up in dataframe
+
 #mb.metadata <- read.csv("https://raw.githubusercontent.com/regan008/8510-TextAnalysisData/main/mb-metadata.csv")
 #mbfile_paths <- system.file("txt/")
 #mb_texts <- readtext(paste("txt/", "*.txt", sep=""))
