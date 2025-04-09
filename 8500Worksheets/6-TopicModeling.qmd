@@ -240,12 +240,6 @@ mindbody1920s <- mindbody_whole %>%
   filter(Year <= 1929 & Year >= 1920)
 
 #no text within the dataframe?
-
-#pre-processing/tidying dataframe
-tidymb1920s <- mindbody1920s %>%
-  unnest_tokens(word, text) %>%
-  anti_join(stop_words)
-
 ```
 
 (@) Now, lets return to the Buffalo Bill data from last week. You should be able to use topic modeling to address two of the research questions provided:
