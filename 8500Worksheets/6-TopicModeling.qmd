@@ -260,10 +260,49 @@ mindbody1920s <- mindbody_whole %>%
 
 (@) Choose one of the datasets from this repository or use one of your own: https://github.com/regan008/8510-TextAnalysisData. Note that there are both zip files with .txt files as well as separate metadata files for each publication in this repo. 
 
-Write a topic model that explores and asks questions of the texts. At the end write a summary that analyzes the results you found. Be sure to rely on your historical knowledge. What can we learn from applying the strategies you've learned in this worksheet to analyze these documents?
+> Fit a topic model that explores and asks questions of the texts. At the end write a summary that analyzes the results you found. Be sure to rely on your historical knowledge. What can we learn from applying the strategies you've learned in this worksheet to analyze these documents? How might topic models be useful to explore a large corpus of texts?
 
+>Load Quest files and metadata
+```{r}
+library(widyr)
+library(tools)
 
+questtext_dir <- "questfiles"
+questfilenames <- list.files(questtext_dir, pattern = "*.txt", full.names = FALSE)
+questtextdata <- readtext(paste(getwd(), "/questfiles/*.txt", sep=""))
+questtextdata <- questtextdata %>%
+  mutate(file_name = file_path_sans_ext(questfilenames)) %>%
+  relocate(file_name, .before = doc_id)
 
-(@) Finally, when you are all done. Write up your findings. What research question did you focus on and what did you learn? 
+questmetadata <- read.csv("questmetadata.csv")
+```
 
+>Join data frames together & pre-processing
+```{r}
+quest <- full_join(questmetadata, questtextdata, join_by("id" == "file_name"))
 
+#pulling notes from Worksheet 5 - logic behind added stop words
+
+tidy_quest <- quest %>%
+  unnest_tokens(word, text) %>%
+  anti_join(custom_stop_words) %>%
+  filter(is.na(as.numeric(word))) %>%
+  select(id, title, volume, date, word)
+head(tidy_quest)
+
+#realized that it would probably be helpful to add a few things to the list of stop words because of headings and such 
+
+custom_stop_words <- stop_words %>%
+  add_row(word = "quest", lexicon = NA) %>%
+  add_row(word = "quarterly", lexicon = NA) %>%
+  add_row(word = "woman", lexicon = NA) %>%
+  add_row(word = "women", lexicon = NA) %>%
+  add_row(word = "women's", lexicon = NA) %>%
+  add_row(word = "woman's", lexicon = NA) %>%
+  add_row(word = "feminist", lexicon = NA) %>%
+  add_row(word = "feminists", lexicon = NA) %>%
+  add_row(word = "feminism", lexicon = NA)
+#intentionally did not add plural of feminism to see if there is any discussion of plural feminisms
+
+#now from the head() I can see more varied results off the bat - could make argument that words like feminism/feminist will skew things but unsure it would be necessary to remove since I want to look at topics/things discussed
+```
