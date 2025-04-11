@@ -409,3 +409,52 @@ quest_top_terms %>% ggplot(aes(beta, term, fill = factor(topic))) +
 
 #decided 12 is a good number of topics - leaving code just to have but keeping model with 12 in my environment
 ```
+
+>expand out to see top 10 words in each topic
+```{r}
+quest_top_terms <- quest_topics %>%
+  arrange(desc(beta)) %>%
+  group_by(topic) %>% slice(1:10)
+
+quest_top_terms %>% ggplot(aes(beta, term, fill = factor(topic))) +
+  geom_col(show.legend = FALSE) +
+  facet_wrap(~topic, scales = "free") +
+  scale_y_reordered()
+
+#while some still are a bit confusing with the beta scores being so high (probably just need to expand to longer list to look at distribution) - a few of the topics are really interesting:
+#Topic 3 seems to be about discussion and sharing experiences (high beta scores, would need to expand) - told, specifically, lesbian, inherent, feels, discuss, etc...
+#Topic 6 is potentially about different places and iterations of feminism - variety, subject, south, movement, exists, d.c, boston, etc...
+#Topic 8 seems to be about the successes/growth of feminism - results, quality, practiced, numerous, grows, chooses, activity, achieving, etc...
+#Topic 9 looks like the most specific one seeming to be about the legal/political rights of women and the role of the church(?) - religious, partiesofficial, literally, law, god, effectiveness, dangers, etc...
+#Topic 11 is potentially about social expressions of feminism through media generating feminist consciousness (feel like I'm stretching) - styles, spent, socialist, publishing, publicity, painful, belong, arise, alive, etc...
+#Topic 12 seems like another most specific one surrounding intellectual ideas and marxism - selling, opportunities, marx, intellectual, focuses, explicit, exchange, energies, employ, etc...
+```
+
+>look at as a wordcloud
+```{r}
+library(wordcloud)
+topic3 <- quest_topics %>%
+  filter(topic == 3)
+wordcloud(topic3$term, topic3$beta, max.words = 100, random.order = FALSE, rot.per = 0.3, colors = brewer.pal(6, "Dark2"))
+
+topic6 <- quest_topics %>%
+  filter(topic == 6)
+wordcloud(topic6$term, topic6$beta, max.words = 100, random.order = FALSE, rot.per = 0.3, colors = brewer.pal(6, "Dark2"))
+
+topic8 <- quest_topics %>%
+  filter(topic == 8)
+wordcloud(topic8$term, topic8$beta, max.words = 100, random.order = FALSE, rot.per = 0.3, colors = brewer.pal(6, "Dark2"))
+
+topic9 <- quest_topics %>%
+  filter(topic == 9)
+wordcloud(topic9$term, topic9$beta, max.words = 100, random.order = FALSE, rot.per = 0.3, colors = brewer.pal(6, "Dark2"))
+
+topic11 <- quest_topics %>%
+  filter(topic == 11)
+wordcloud(topic11$term, topic11$beta, max.words = 100, random.order = FALSE, rot.per = 0.3, colors = brewer.pal(6, "Dark2"))
+
+topic12 <- quest_topics %>%
+  filter(topic == 12)
+wordcloud(topic12$term, topic12$beta, max.words = 100, random.order = FALSE, rot.per = 0.3, colors = brewer.pal(6, "Dark2"))
+#this topic model highlights the word "exchange" - further alludes to what i was thinking about the topic being about the intellectual exhange - interesting that it would show up this way considering the audience of the full publication is academic - or maybe not
+```
