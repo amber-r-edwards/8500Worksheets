@@ -498,3 +498,93 @@ ggplot(quest_topics_by_year, aes(date, gamma)) + geom_bar(stat = "identity") + f
 >Pivoting to gamma scores and document topic probabilities, I found some confusion over the presence of Topic 12 that I anticipated to be much higher in the first issue to actually be higher in the latest issue. While the top three were the same (4 - families, exist, examine, cover, charlotte; 1- differences, developed, concrete, choice, changed; and 6 - variety, subject, south, movement, maintains), the first issue also had topics 5 (provided, press, post, phenomen, personally) and 2 (spirit, sally, regular, poetry, perspectives) whereas the last had topics 3 and 12. The first issue, published in 1974 seemed to have less emphasis on intellectual exchange with this model than I anticipated - particularly as I know from close reading that the first issue sets the intention of the quarterly and the desired audience of feminist academics. The last issue, published in 1982, is indicated to have a stronger focus on this type of intellectual exchange - which is interesting upon closer reading that shows the focus of this edition to be "Movement Building." Historiographically, this could indicate a higher level of reference to existing scholarship across all of the pieces included in the issue - potentially using more standardized language to discuss the relationship of emerging feminist theory to movement building on the ground - but would certainly require a more in depth examination into the full Vol 5 no 4 issue.
 
 >What was odd and leads me to want to mess with the number of topics more (will probably add to this worksheet for reference below the completed sections for class), is that when I joined with the metadata to visualize over time, I saw what seems like the opposite result. It seems like the first year of publication had the biggest score for almost every topic - which makes sense given that it was trying to establish the scope and intent of the publication - aside from one anomoly where Topic 9 (religious, parties, official, literally, law) was highest in 1976. My first inclination was this might be in response to preparation for the 1977 Women's Conference in Houston, but this isn't the case because it wouldn't have begun until set up by President Carter in 1977. A quick search of 1976 shows it as the year that President Carter was elected over incumbent President Ford, which could signal discussion for potential successes passing more legislation supporting feminist aims in the lead up and after his election. Looking at feminist scholarship published around the time, Eleanor Flexnor's Century of Struggle is published in 1975, the first comprehensive women's history of the US. Rather than linked to a specific event, my best idea is that Topic 9 was resurging simply because of an increased linkage of women's rights and feminist aims tied up with the increasingly conservative American political climate and its association with religion. Finally, topic 12 is shown as highest in the first year of the publication - dropping off before breifly resuming its height and then settling for the later issues. I would be curious about length of issues potentially playing a role, but overall the visualizations compared to one another are at worst inconclusive and at best require additional modeling to tease out how the content changed over time on a more granular level and whether this reflects the changing audience of feminists.
+
+
+
+>BREAK - below is me messing with the number of topics more/trying to see what else I can tease out just so I have it all in one place for future reference - didn't want to make the code too long before writing summary for worksheet
+
+>new model - 25 topics
+```{r}
+quest_lda <- LDA(quest_dtm, k = 25, control = list(seed = 25252), method = "Gibbs", alpha = 0.5)
+```
+
+>word topic probabilities
+```{r}
+quest_topics <- tidy(quest_lda, matrix = "beta")
+
+quest_top_terms <- quest_topics %>%
+  arrange(desc(beta)) %>%
+  group_by(topic) %>% slice(1:10)
+
+quest_top_terms %>% ggplot(aes(beta, term, fill = factor(topic))) +
+  geom_col(show.legend = FALSE) +
+  facet_wrap(~topic, scales = "free") +
+  scale_y_reordered()
+
+#shows a lot more incomplete words/OCR errors but none common enough to add to stopwords list
+#wondering how beneficial adding propernames to the stopwords list would be
+#I'm also wondering if I was woefully off with stopping at 12 - will try more just to see what else comes up
+```
+
+>new model - 40 topics
+```{r}
+quest_lda <- LDA(quest_dtm, k = 40, control = list(seed = 40404), method = "Gibbs", alpha = 0.5)
+```
+
+>word topic probabilities
+```{r}
+quest_topics <- tidy(quest_lda, matrix = "beta")
+
+quest_top_terms <- quest_topics %>%
+  arrange(desc(beta)) %>%
+  group_by(topic) %>% slice(1:10)
+
+quest_top_terms %>% ggplot(aes(beta, term, fill = factor(topic))) +
+  geom_col(show.legend = FALSE) +
+  facet_wrap(~topic, scales = "free") +
+  scale_y_reordered()
+
+#genuinely cannot tell if it is getting clearer or more incoherent
+```
+
+>new model - 50 topics
+```{r}
+quest_lda <- LDA(quest_dtm, k = 50, control = list(seed = 50505), method = "Gibbs", alpha = 0.5)
+```
+
+>word topic probabilities
+```{r}
+quest_topics <- tidy(quest_lda, matrix = "beta")
+
+quest_top_terms <- quest_topics %>%
+  arrange(desc(beta)) %>%
+  group_by(topic) %>% slice(1:10)
+
+quest_top_terms %>% ggplot(aes(beta, term, fill = factor(topic))) +
+  geom_col(show.legend = FALSE) +
+  facet_wrap(~topic, scales = "free") +
+  scale_y_reordered()
+#okay i think I've gone over the point of incoherent
+```
+
+>new model - 45 topics
+```{r}
+quest_lda <- LDA(quest_dtm, k = 45, control = list(seed = 40404), method = "Gibbs", alpha = 0.5)
+```
+
+>word topic probabilities
+```{r}
+quest_topics <- tidy(quest_lda, matrix = "beta")
+
+quest_top_terms <- quest_topics %>%
+  arrange(desc(beta)) %>%
+  group_by(topic) %>% slice(1:10)
+
+quest_top_terms %>% mutate(term = reorder_within(term, beta, topic)) %>%
+  ggplot(aes(beta, term, fill = factor(topic))) +
+  geom_col(show.legend = FALSE) +
+  facet_wrap(~topic, scales = "free") +
+  scale_y_reordered()
+
+#I JUST REALIZED I WAS MISSING THE MUTATE LINE THAT PUTS THEM IN ORDER OMG
+```
