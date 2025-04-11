@@ -458,3 +458,32 @@ topic12 <- quest_topics %>%
 wordcloud(topic12$term, topic12$beta, max.words = 100, random.order = FALSE, rot.per = 0.3, colors = brewer.pal(6, "Dark2"))
 #this topic model highlights the word "exchange" - further alludes to what i was thinking about the topic being about the intellectual exhange - interesting that it would show up this way considering the audience of the full publication is academic - or maybe not
 ```
+
+>document-topic probabilityes - understnad what topics are prevalent in what documents (changes over time in topics discussed - question from previous worksheet)
+```{r}
+quest_documents <- tidy(quest_lda, matrix = "gamma")
+head(quest_documents)
+
+#filter to view first and last issue - one issue may arise with weird naming of the documents from internet archive
+quest_documents %>% filter(document == "questfeministqua11wash") %>% arrange(desc(gamma))
+#top 5 topics in first issue (1974) are: 4, 1, 6, 5, 2
+
+quest_documents %>% filter(document == "questfeministqua54wash") %>% arrange(desc(gamma))
+#top 5 topics in last issue (1982) are: 4, 1, 6, 3, 12
+
+#while the top 3 are the same, the change in the last one is actually opposite to what I hypothesized in the last worksheet that as the issues went on they became less intellectually focused. Since topic 12 is the one I identified as intellectually driven, this indicates that it has a stronger presence in the later issues than the earlier issues (just off the top 5 at 6th place in terms of gamma score for the first issue)
+```
+
+>join with metadata to visualize over time
+```{r}
+quest_topics_by_year <- full_join(quest_documents, questmetadata, by = join_by(document == id))
+head(quest_topics_by_year)
+
+#because the date convention is just by year I'm wondering how effective these will be - may need to adjust to using the volume and numbers somehow (would require splitting the column but still not sure it would function the same as month/year) - will try by year anyway to get a general idea
+
+ggplot(quest_topics_by_year, aes(date, gamma)) + geom_bar(stat = "identity") + facet_wrap(~topic, scales = "free") + theme(axis,text.x = element_text(angle = 90, vjust = 0.5, hjust = 1))
+
+#from this it is actually quite difficult to see changes over time - have to ignore the furtherst right bar because spring, 1974 should fall just under 1974 - as the graphs are very similar
+#it seems like the first year of publication had he biggest gamma score for almost every topic - one anomoly being that Topic 9 was highest in 1976 (could gesture toward gearing up to the 1977 Women's Conference in Houston?)
+#again = with Topic 12, emphasizes that it was highest in the first publication - though interestingly drops off in the second before resurging briefly and staying low for the later issues - seeming to support what I saw with basic text analysis - wondering if the reason it was so high in the last issue's document probability is because of shorter length?
+```
