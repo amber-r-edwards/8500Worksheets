@@ -286,7 +286,7 @@ quest <- full_join(questmetadata, questtextdata, join_by("id" == "file_name"))
 tidy_quest <- quest %>%
   unnest_tokens(word, text) %>%
   anti_join(custom_stop_words) %>%
-  filter(is.na(as.numeric(word))) %>%
+  filter(!grepl("[0-9]", word)) %>%
   select(id, title, volume, date, word)
 head(tidy_quest)
 
@@ -305,4 +305,107 @@ custom_stop_words <- stop_words %>%
 #intentionally did not add plural of feminism to see if there is any discussion of plural feminisms
 
 #now from the head() I can see more varied results off the bat - could make argument that words like feminism/feminist will skew things but unsure it would be necessary to remove since I want to look at topics/things discussed
+```
+
+>get count and turn into dtm
+```{r}
+tidy_quest_words <- tidy_quest %>%
+  count(id, word)
+
+quest_dtm <- tidy_quest_words %>%
+  count(id, word) %>%
+  cast_dtm(id, word, n)
+```
+
+>create topic model/train
+```{r}
+quest_lda <- LDA(quest_dtm, k = 5, control = list(seed = 09876), method = "Gibbs", alpha = 0.5)
+```
+
+>word-topic probabilities - look at themes/see if top terms are coherent or if need to change number of topics
+```{r}
+quest_topics <- tidy(quest_lda, matrix = "beta")
+head(quest_topics)
+
+quest_top_terms <- quest_topics %>%
+  arrange(desc(beta)) %>%
+  group_by(topic) %>% slice(1:5)
+
+quest_top_terms %>% ggplot(aes(beta, term, fill = factor(topic))) +
+  geom_col(show.legend = FALSE) +
+  facet_wrap(~topic, scales = "free") +
+  scale_y_reordered()
+#top 5 words all seem to have the highest beta scores - slicing up to 10 to see difference but may just need more topics in the LDA
+
+quest_top_terms <- quest_topics %>%
+  arrange(desc(beta)) %>%
+  group_by(topic) %>% slice(1:10)
+
+quest_top_terms %>% ggplot(aes(beta, term, fill = factor(topic))) +
+  geom_col(show.legend = FALSE) +
+  facet_wrap(~topic, scales = "free") +
+  scale_y_reordered()
+#top 10 produced same result - lets change the number of topics
+```
+
+>new model - 10 topics
+```{r}
+quest_lda <- LDA(quest_dtm, k = 10, control = list(seed = 34567), method = "Gibbs", alpha = 0.5)
+```
+
+>word topic probabilities
+```{r}
+quest_topics <- tidy(quest_lda, matrix = "beta")
+
+quest_top_terms <- quest_topics %>%
+  arrange(desc(beta)) %>%
+  group_by(topic) %>% slice(1:5)
+
+quest_top_terms %>% ggplot(aes(beta, term, fill = factor(topic))) +
+  geom_col(show.legend = FALSE) +
+  facet_wrap(~topic, scales = "free") +
+  scale_y_reordered()
+
+#having 10 topics definitely fixed the issue of the equally high beta scores - some topics more coherent, I think a few more may help get to a more equal level of coherence across the topics
+```
+
+>new model - 12 topics
+```{r}
+quest_lda <- LDA(quest_dtm, k = 12, control = list(seed = 81999), method = "Gibbs", alpha = 0.5)
+```
+
+>word topic probabilities
+```{r}
+quest_topics <- tidy(quest_lda, matrix = "beta")
+
+quest_top_terms <- quest_topics %>%
+  arrange(desc(beta)) %>%
+  group_by(topic) %>% slice(1:5)
+
+quest_top_terms %>% ggplot(aes(beta, term, fill = factor(topic))) +
+  geom_col(show.legend = FALSE) +
+  facet_wrap(~topic, scales = "free") +
+  scale_y_reordered()
+#12 is pretty good - just curious to see 15
+```
+
+>new model - 15 topics
+```{r}
+quest_lda <- LDA(quest_dtm, k = 15, control = list(seed = 13240), method = "Gibbs", alpha = 0.5)
+```
+
+>word topic probabilities
+```{r}
+quest_topics <- tidy(quest_lda, matrix = "beta")
+
+quest_top_terms <- quest_topics %>%
+  arrange(desc(beta)) %>%
+  group_by(topic) %>% slice(1:5)
+
+quest_top_terms %>% ggplot(aes(beta, term, fill = factor(topic))) +
+  geom_col(show.legend = FALSE) +
+  facet_wrap(~topic, scales = "free") +
+  scale_y_reordered()
+
+#decided 12 is a good number of topics - leaving code just to have but keeping model with 12 in my environment
 ```
