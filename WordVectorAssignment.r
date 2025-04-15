@@ -54,3 +54,30 @@ high_similarities_to_list %>%
     biplot(main = "50 words in a \n projection of radical, feminism, gay, and sexuality")
 #this one is really cool
 # - a lot of ideological terms hovering toward feminism and radical spread across middle between gay and sexuality - wonder if I change to gay and hetero how it changes because i think this is skewing it to where heterosexual is seeming closer to sexuality when that may skew the proximity of gay to discsusions of sexuality(NEXT MODEL)
+
+radical2 <- model[[c("radical", "feminism", "gay", "hetero"), average = F]]
+common_similarities_radical2 <- model[1:3000, ] %>% cosineSimilarity(radical2)
+common_similarities_radical2[20:30, ]
+high_similarities_to_radical <- common_similarities_radical2[rank(-apply(common_similarities_radical2, 1, max)) < 75, ]
+high_similarities_to_radical %>%
+    prcomp() %>%
+    biplot(main = "50 words in a \n projection of radical, feminism, gay, and hetero")
+#interesting for a few reasons
+#  -mostly legal/political language near gay (caucus, custody, rights) - separatist and soclialist between gay and radical
+#  -a lot more words near hetero (choce because I had seen it appear higher on other lists assuming bc OCR errors
+#  -most language resembling theory or scholarship closer to feminism or the center
+
+#using calculations to find words that are most used with women vs men
+#using closest_to() did not work - solution posed to use nearest_to()
+model %>%
+    nearest_to(model[["women"]]) %>%
+    round(3)
+#mostly stop words
+model %>%
+    nearest_to(model[["men"]]) %>%
+    round(3)
+#first word is HARASSING (too real) and threatened is #4
+model %>%
+    nearest_to(model[[c("she", "her", "women", "woman")]] - model[[c("he", "his", "man", "man")]]) %>%
+    round(3)
+#not super clear (astrology, expressing, politicization) - probably skewed because of content of corpus focusing on women
