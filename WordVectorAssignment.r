@@ -69,15 +69,37 @@ high_similarities_to_radical %>%
 
 #using calculations to find words that are most used with women vs men
 #using closest_to() did not work - solution posed to use nearest_to()
+
 model %>%
     nearest_to(model[["women"]]) %>%
     round(3)
 #mostly stop words
+
 model %>%
     nearest_to(model[["men"]]) %>%
     round(3)
 #first word is HARASSING (too real) and threatened is #4
+
 model %>%
     nearest_to(model[[c("she", "her", "women", "woman")]] - model[[c("he", "his", "man", "man")]]) %>%
     round(3)
 #not super clear (astrology, expressing, politicization) - probably skewed because of content of corpus focusing on women
+
+model %>%
+    nearest_to(model[[c("gay", "lesbian", "homosexual")]] - model[[c("straight", "hetero", "heterosexual")]]) %>%
+    round(3)
+#legislature, connecticut, seattle, featuring, files, directory, gay, coast, chairperson, maga - wondering where these places came from, a lot of political/legislative language as well
+#curious what would happen with the reverse
+model %>%
+    nearest_to(model[[c("straight", "hetero", "heterosexual")]] - model[[c("gay", "lesbian", "homosexual")]]) %>%
+    round(3)
+#hetero, superiority, heterosexual, priviledge, divides, middle, distinctions, divide, creates, perpetuated - all seem to pull from discussion of LGBTQ oppression
+
+
+wowords <- model[[c("female", "females", "women", "woman", "feminine", "she", "woman's")]] %>% reject(model[[c("male", "males", "men", "man", "masculine", "he", "men's")]])
+model %>% nearest_to(wowords, 100)
+
+menwords <- model[[c("male", "males", "men", "man", "masculine", "he", "men's")]] %>% reject(model[[c("female", "females", "women", "woman", "feminine", "she", "woman's")]])
+model %>% nearest_to(menwords, 100)
+#wowords has a lot more variety than menwords - primarily in language describing institutions/systems of oppression dominated by men whereas wowords seems to refer to skills, values, attributes, and criticisms
+
