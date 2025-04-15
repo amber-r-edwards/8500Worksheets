@@ -5,6 +5,11 @@
 #   - something to consider:
 #       - what happens if you divide corpus and train/compare two models?
 
+
+# ----------------------------------------------------
+# Building according to class method/experimentation
+# ----------------------------------------------------
+
 #load libraries
 library(wordVectors)
 library(tidyverse)
@@ -159,4 +164,26 @@ subset %>%
     plot()
 #somewhat difficult to read - repetitions of words in diff sections (specifically socialism/socialist) but can see some distinct clusters - marxist theory and orthodoxy at the left, assuming feminist is linking together the terms with dates and quarterly, and then radical and socialist toward the right with associations with gays and political
 
-#IDEA: race in the above visualizations - connection to feminisms vs one mainstream narrative of white feminism (time period of high activity in black fmeinist activism - esp prison mvmt, Free Joan Little)
+# -----------------------------------------
+#  Historical Questions/Analysis
+# -----------------------------------------
+
+#IDEA: race in the above visualizations - connection to feminisms vs one mainstream narrative of white feminism (time period of high activity in black fmeinist activism - esp prison mvmt, Greene, Free Joan Little)
+#Question:
+
+
+#IDEA: pulling from previous methodological experiments, what is the difference between the early issues and late - associated words with sexuality and race?; first issue states purpose as seeking "in-depth feminist political analysis and ideological development" so what are the changes using political and ideological?, how does the ideal of liberation seem to change?
+#Question:
+
+
+#IDEA: increasing global/international focus of feminism in the mid 1980s - quest stops publishing in 1982 but is there a transition toward the later issues (maybe split by 2 years) - (Levenstein, They Didn't See Us Coming)
+#Question: 
+
+
+#IDEA: discussions of health - quarterly did not begin publishing until after Roe, increasingly conservative political context, etc.
+#Question:
+
+
+#IDEA: discussions of violence - sexual or otherwise
+#Question: 
+
