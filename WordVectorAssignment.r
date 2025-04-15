@@ -37,5 +37,20 @@ personalpolitics <- personalpolitics[
 ]
 plot(personalpolitics, type = "n")
 text(personalpolitics, labels = rownames(personalpolitics))
-
 #not as many very close to either word as I was expecting - wondering if I need a different model that does bi-grams to keep words together? but would have to be tri-grams in case of "personal is political"
+
+model %>% closest_to("intersection") #just stop words
+
+model %>% closest_to("radical") #(radical, socialist, feminism, liberal, feminists, radi, gays, aligned, departure, separatist)
+
+#50 most common words to a group of terms: radical, feminism, gay, sexuality
+radical <- model[[c("radical", "feminism", "gay", "sexuality"), average = F]]
+common_similarities_radical <- model[1:3000, ] %>% cosineSimilarity(radical)
+common_similarities_radical[20:30, ]
+    #mostly stopwords
+high_similarities_to_list <- common_similarities_radical[rank(-apply(common_similarities_radical, 1, max)) < 75, ]
+high_similarities_to_list %>%
+    prcomp() %>%
+    biplot(main = "50 words in a \n projection of radical, feminism, gay, and sexuality")
+#this one is really cool
+# - a lot of ideological terms hovering toward feminism and radical spread across middle between gay and sexuality - wonder if I change to gay and hetero how it changes because i think this is skewing it to where heterosexual is seeming closer to sexuality when that may skew the proximity of gay to discsusions of sexuality(NEXT MODEL)
