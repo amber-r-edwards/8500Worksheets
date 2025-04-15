@@ -103,3 +103,60 @@ menwords <- model[[c("male", "males", "men", "man", "masculine", "he", "men's")]
 model %>% nearest_to(menwords, 100)
 #wowords has a lot more variety than menwords - primarily in language describing institutions/systems of oppression dominated by men whereas wowords seems to refer to skills, values, attributes, and criticisms
 
+#using same example from class but changing gender to sexuality
+sexuality_vector <- model[[c("gay", "lesbian", "homosexual")]] - model[[c("straight", "hetero", "heterosexual")]]
+word_scores <- data.frame(word = rownames(model))
+word_scores$sexuality_score <- model %>%
+    cosineSimilarity(sexuality_vector) %>%
+    as.vector()
+
+ggplot(word_scores %>% filter(abs(sexuality_score) > .33)) +
+    geom_bar(aes(y=sexuality_score, x = reorder(word, sexuality_score), fill=sexuality_score <0), stat = "identity") +
+    coord_flip() +
+    scale_fill_discrete("Indicative of sexuality (limited to homosexual and heterosexual)", labels = c("homosexual", "heterosexual")) +
+    labs(title = "The words showing the strongest skew along the sexuality binary")
+#not sure how effective this is: uses a binary that is reductive of a full spectrum of sexualities, because the corpus is feminist focused it doesn't reflect a larger public consensus just a consensus from the articles published and their content
+
+#trying the gender one from class
+gender_vector <- model[[c("feminine", "feminity", "woman", "women")]] - model[[c("masculine", "masculinity", "men", "man")]]
+
+word_scores <- data.frame(word = rownames(model))
+word_scores$gender_score <- model %>%
+    cosineSimilarity(gender_vector) %>%
+    as.vector()
+
+ggplot(word_scores %>% filter(abs(gender_score) > .33)) +
+    geom_bar(aes(y = gender_score, x = reorder(word, gender_score), fill = gender_score < 0), stat = "identity") +
+    coord_flip() +
+    scale_fill_discrete("Indicative of gender", labels = c("Feminine", "masculine")) +
+    labs(title = "The words showing the strongest skew along the gender binary")
+#shows only feminine words  - not effective as id suspected given the content
+
+#Clustering
+set.seed(10)
+centers <- 150
+clustering <- kmeans(model, centers = centers, iter.max = 40)
+
+sapply(sample(1:centers, 10), function(n) {
+    names(clustering$cluster[clustering$cluster == n][1:10])
+}) 
+#clusters 2 and 9 seem to be about race; clusters 3 and 6 seem to be about history and/or feminisms position?
+
+#Dendograms
+ideology <- c("radical", "socialist", "marxist", "feminist")
+term_set <- lapply(
+    ideology,
+    function(ideology) {
+        nearest_words <- model %>% closest_to(model[[ideology]], 20)
+        nearest_words$word
+    }
+) %>% unlist()
+subset <- model[[term_set, average = F]]
+subset %>%
+    cosineDist(subset) %>%
+    as.dist() %>%
+    hclust() %>%
+    plot()
+#somewhat difficult to read - repetitions of words in diff sections (specifically socialism/socialist) but can see some distinct clusters - marxist theory and orthodoxy at the left, assuming feminist is linking together the terms with dates and quarterly, and then radical and socialist toward the right with associations with gays and political
+
+#IDEA: race in the above visualizations - connection to feminisms vs one mainstream narrative of white feminism (time period of high activity in black fmeinist activism - esp prison mvmt, Free Joan Little)
