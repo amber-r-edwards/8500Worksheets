@@ -209,6 +209,11 @@ high_similarities_race %>%
 
 #Question: What are the differences between closest words to "feminism", "political" and "ideological" in the first volume of issues (1974) and the last volume (1980-82 - expanded because only 1 issue in 1982)? Do they reflect a maintenance of "in-depth feminist political analysis and ideological development" as stated in the original intent? 
 
+#Results: 
+# - only overlapping words: ideological, political, depth, feminism, term
+# - vol 1 seems to associate the original intent as related to broader explorations, theory, and development of feminist perspectives
+# - vol 5 seems to associate the original intent as related to activism and specific impact, potentially relating the political/elected roles, as well as a global approach or more varied understandings of feminism
+
 #first need to make models that filter to just the years I want
 # - from my files metadata - I know which files fall under the volumes: 1- (11, 12, 13, 14) and 5 - (51, 52, 53, 54)
 
@@ -271,6 +276,7 @@ longvolsimilarity <- volumewordsimilarity %>%
 ggplot(longvolsimilarity, aes(x = word, y = similarity_score, fill = volume)) + geom_bar(stat = "identity") + labs(title = "Word Similarity Scores to Feminism, Political, and Ideological Across Volumes", x = "Word", y = "Similarity Score", fill = "Volume") + coord_flip()
 #this didn't work as well as I thought it would because there aren't many overlapping words
 #not as bad after mutating to put overlapping words on top but still not optimal
+# - skews which from vol 1 are highest scored because they're overlapped 
 
 #IDEA: increasing global/international focus of feminism in the mid 1980s - quest stops publishing in 1982 but is there a transition toward the later issues (maybe split by 2 years) - (Levenstein, They Didn't See Us Coming)
 #Question: 
