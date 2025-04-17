@@ -207,7 +207,7 @@ high_similarities_race %>%
 
 #IDEA: pulling from previous methodological experiments, what is the difference between the early issues and late - associated words with sexuality and race?; first issue states purpose as seeking "in-depth feminist political analysis and ideological development" so what are the changes using political and ideological?, how does the ideal of liberation seem to change (thinking about Levenstien and Greene - changing interests/focuses of feminists)
 
-#Question: What are the differences between most common words in the first volume of issues (1974) and the last volume (1980-82 - expanded because only 1 issue in 1982)? Do they reflect a maintenance of "in-depth feminist political analysis and ideological development" as stated in the original intent? How does the usage of the word liberation change and does it seem to reflect a change to the image of what "liberation" looked like for feminists by the 1980s? 
+#Question: What are the differences between closest words to "feminism", "political" and "ideological" in the first volume of issues (1974) and the last volume (1980-82 - expanded because only 1 issue in 1982)? Do they reflect a maintenance of "in-depth feminist political analysis and ideological development" as stated in the original intent? 
 
 #first need to make models that filter to just the years I want
 # - from my files metadata - I know which files fall under the volumes: 1- (11, 12, 13, 14) and 5 - (51, 52, 53, 54)
@@ -243,6 +243,32 @@ if (!file.exists("questvol5.bin")) {
     vol5model <- read.vectors("questvol5.bin")
 }
 
+#most common words:
+vol1words <- vol1model %>% closest_to(c("feminism", "political", "ideological"), n = 20)
+# political, ideological, depth, feminism, analysis, explore, term, project, ideology, inherent, theory, cultural, development, fundamental, discussions, perspectives, exists, long, tool, alters
+
+vol5words <- vol5model %>% closest_to(c("feminism", "political", "ideological"), n = 20)
+# ideological, feminism, depth, activism, political, seeking, perspective, emerged, griffin's, speaks, global, insights, impact, parties, term, comprehensive, separatism, nist, leading, various
+
+#def shows what I was thinking with depth, perspective, global, insights, separatism - gestures toward engaging with other feminisms and international coalitions forming
+
+#join together then plot
+volumewordsimilarity <- full_join(vol1words, vol5words, by = "word")
+colnames(volumewordsimilarity)[2] <- "vol1_similarity"
+colnames(volumewordsimilarity)[3] <- "vol5_similarity"
+volumewordsimilarity[is.na(volumewordsimilarity)] <- 0 #gave 0 values for words where they didn't have values b/c not in the top 20 of one of the volumes
+
+#want to do stacked bar chart
+longvolsimilarity <- volumewordsimilarity %>%
+    pivot_longer(
+        cols = c(vol1_similarity, vol5_similarity),
+        names_to = "volume",
+        values_to = "similarity_score"
+    ) %>%
+    arrange(desc(similarity_score))
+
+ggplot(longvolsimilarity, aes(x = word, y = similarity_score, fill = volume)) + geom_bar(stat = "identity") + labs(title = "Word Similarity Scores to Feminism, Political, and Ideological Across Volumes", x = "Word", y = "Similarity Score", fill = "Volume") + coord_flip()
+#this didn't work as well as I thought it would because there aren't many overlapping words
 
 #IDEA: increasing global/international focus of feminism in the mid 1980s - quest stops publishing in 1982 but is there a transition toward the later issues (maybe split by 2 years) - (Levenstein, They Didn't See Us Coming)
 #Question: 
