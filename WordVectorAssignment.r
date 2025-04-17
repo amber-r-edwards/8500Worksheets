@@ -210,14 +210,18 @@ high_similarities_race %>%
 #Question: What are the differences between closest words to "feminism", "political" and "ideological" in the first volume of issues (1974) and the last volume (1980-82 - expanded because only 1 issue in 1982)? Do they reflect a maintenance of "in-depth feminist political analysis and ideological development" as stated in the original intent? 
 
 #Results: 
+# closest to cosine similarity plotted onto a stacked bar chart
 # - only overlapping words: ideological, political, depth, feminism, term
 # - vol 1 seems to associate the original intent as related to broader explorations, theory, and development of feminist perspectives
 # - vol 5 seems to associate the original intent as related to activism and specific impact, potentially relating the political/elected roles, as well as a global approach or more varied understandings of feminism
+# highest cosine similarity scores on a biplot to spatially represent relationship to words
+# - vol1global - no usage of global; only clusters leaning toward ideology but not far from center; political language around culture, gay, media, dominant; clusters by ideology (selected, statement, american, professive, belt, complex), (pagem mopey?, academy, society, review, era, operation, salves, mainstream, ed), (wife, ?, open, nuclear, professionalism, bookm family, letter)
+# - vol5global - feminism and global off on their own with loose words around (employed, represent, girls, conflicts, loans, adjusted, educated, built, plans); words between ideology and global (lower, working, backgrounds, vary, adequate, divide); ideology (myths, traditionally, systems, confront, status, legal, ideal); between ideology and political (decisions, reflect); political (doctors, vice, causes, dangerous, personal, policy, standards, exam, setting, service, professions); between political and feminism/global (ethnic, generally, industrial, professionalism)
 
 #first need to make models that filter to just the years I want
 # - from my files metadata - I know which files fall under the volumes: 1- (11, 12, 13, 14) and 5 - (51, 52, 53, 54)
 
-# - create new directories with just the files I want (NOTE - MOVES THEM OUT OF QUESTFILES, will mess up if try to run original models without reverting first)
+# - create new directories with just the files I want (NOTE - MOVES THEM OUT OF QUESTFILES, will mess up if try to run original models without reverting/duplicating first)
 #vol 1
 if(!dir.exists("questvol1files")) {dir.create("questvol1files")}
 
@@ -278,14 +282,34 @@ ggplot(longvolsimilarity, aes(x = word, y = similarity_score, fill = volume)) + 
 #not as bad after mutating to put overlapping words on top but still not optimal
 # - skews which from vol 1 are highest scored because they're overlapped 
 
-#IDEA: increasing global/international focus of feminism in the mid 1980s - quest stops publishing in 1982 but is there a transition toward the later issues (maybe split by 2 years) - (Levenstein, They Didn't See Us Coming)
-#Question: 
+#diff between overall and volume 5 
+model %>% closest_to("global", n = 15)
+# global, copenhagen, feminism, invaluable, rests, prospects, globally, ideology, introduction, bunch's, libera, quarter, colonialism, theresa, imper
 
+vol5model%>% closest_to("global", n = 15)
+# global, copenhagen, technologists, prospects, exploring, feminism, comprehensive, assess, links, organiza, host, alter, difining, ecology, built
 
-#IDEA: discussions of health - quarterly did not begin publishing until after Roe, increasingly conservative political context, etc.
-#Question:
+#vol1 cosine similarity scores with global and the original intent
+global1 <- vol1model[[c("global", "feminism", "political", "ideology"), average = F]]
+common_similarities_global1 <- model[1:3000, ] %>% cosineSimilarity(global1)
+common_similarities_global1[20:30, ]
+high_similarities_global1 <- common_similarities_global1[rank(-apply(common_similarities_global1, 1, max)) < 75, ]
+high_similarities_global1 %>%
+    prcomp() %>%
+    biplot(main = "Most common words in a \n projection of global, feminism, political, and ideology")
 
+#vol5 cosine similarity scores with global and original intent
+global5 <- vol5model[[c("global", "feminism", "political", "ideology"), average = F]]
+common_similarities_global5 <- model[1:3000, ] %>% cosineSimilarity(global5)
+common_similarities_global5[20:30, ]
+high_similarities_global5 <- common_similarities_global5[rank(-apply(common_similarities_global5, 1, max)) < 75, ]
+high_similarities_global5 %>%
+    prcomp() %>%
+    biplot(main = "Most common words in a \n projection of global, feminism, political, and ideology")
+
+# -----------------------------------------------------------------
 
 #IDEA: discussions of violence - sexual or otherwise
 #Question: 
+
 
