@@ -265,10 +265,12 @@ longvolsimilarity <- volumewordsimilarity %>%
         names_to = "volume",
         values_to = "similarity_score"
     ) %>%
-    arrange(desc(similarity_score))
+    arrange(desc(similarity_score)) %>%
+    mutate(word = reorder(word, +similarity_score))
 
 ggplot(longvolsimilarity, aes(x = word, y = similarity_score, fill = volume)) + geom_bar(stat = "identity") + labs(title = "Word Similarity Scores to Feminism, Political, and Ideological Across Volumes", x = "Word", y = "Similarity Score", fill = "Volume") + coord_flip()
 #this didn't work as well as I thought it would because there aren't many overlapping words
+#not as bad after mutating to put overlapping words on top but still not optimal
 
 #IDEA: increasing global/international focus of feminism in the mid 1980s - quest stops publishing in 1982 but is there a transition toward the later issues (maybe split by 2 years) - (Levenstein, They Didn't See Us Coming)
 #Question: 
