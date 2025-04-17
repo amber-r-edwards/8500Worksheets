@@ -14,6 +14,8 @@
 library(wordVectors)
 library(tidyverse)
 library(ggplot2)
+install.packages("word2vec")
+library(word2vec)
 
 #create file and prep txt by taking every txt file from directory and compiling it into one massive file
 if(!file.exists("quest.txt")) prep_word2vec(origin = "questfiles", destination = "quest.txt", lowercase = T, bundle_ngrams = 1)
@@ -200,12 +202,28 @@ high_similarities_race <- common_similarities_race[rank(-apply(common_similariti
 high_similarities_race %>%
     prcomp() %>%
     biplot(main = "50 words in a projection of black and white")
-#there are some interesting cluseters
+#there are some interesting cluseters - see results
 
 # --------------------------------------------------------------------------------
 
-#IDEA: pulling from previous methodological experiments, what is the difference between the early issues and late - associated words with sexuality and race?; first issue states purpose as seeking "in-depth feminist political analysis and ideological development" so what are the changes using political and ideological?, how does the ideal of liberation seem to change?
-#Question:
+#IDEA: pulling from previous methodological experiments, what is the difference between the early issues and late - associated words with sexuality and race?; first issue states purpose as seeking "in-depth feminist political analysis and ideological development" so what are the changes using political and ideological?, how does the ideal of liberation seem to change (thinking about Levenstien and Greene - changing interests/focuses of feminists)
+
+#Question: What are the differences between most common words in the first volume of issues (1974) and the last volume (1980-82 - expanded because only 1 issue in 1982)? Do they reflect a maintenance of "in-depth feminist political analysis and ideological development" as stated in the original intent? How does the usage of the word liberation change and does it seem to reflect a change to the image of what "liberation" looked like for feminists by the 1980s? 
+
+#first need to make models that filter to just the years I want
+# - from my files metadata - I know which files fall under the volumes: 1- (11, 12, 13, 14) and 5 - (51, 52, 53, 54)
+
+#create file and prep txt by taking every txt file from directory and compiling it into one massive file
+vol1files <- file.path("questfiles", c("questfeministqua11wash.txt", "questfeministqua12wash.txt", "questfeministqua13wash.txt", "questfeministqua14wash.txt"))
+
+if(!file.exists("questvol1.txt")) prep_word2vec(origin = c("questfiles/questfeministqua11wash.txt", "questfiles/questfeministqua12wash.txt", "questfiles/questfeministqua13wash.txt", "questfeministqua14wash.txt"), destination = "questvol1.txt", lowercase = TRUE, bundle_ngrams = 1)
+
+#output model as a file to computer - read prevents accidentally overwriting (if you need new file delete and rerun)
+if (!file.exists("questvol1.bin")) {
+    model <- train_word2vec("questvol1.txt", "questvol1.bin", vectors = 150, threads = 3, window = 12, iter = 5, negative_samples = 0)   
+} else {
+    model <- read.vectors("questvol1.bin")
+}
 
 
 #IDEA: increasing global/international focus of feminism in the mid 1980s - quest stops publishing in 1982 but is there a transition toward the later issues (maybe split by 2 years) - (Levenstein, They Didn't See Us Coming)
