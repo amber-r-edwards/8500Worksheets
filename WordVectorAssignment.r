@@ -168,8 +168,15 @@ subset %>%
 #  Historical Questions/Analysis
 # -----------------------------------------
 
-#IDEA: race in the above visualizations - connection to feminisms vs one mainstream narrative of white feminism (time period of high activity in black fmeinist activism - esp prison mvmt, Greene, Free Joan Little)
+#IDEA: race in the above visualizations - connection to feminisms vs one mainstream narrative of white feminism (time period of high activity in black feminist activism - esp prison mvmt, Greene, Free Joan Little)
+
 #Question: What words are most associated with race within Quest: Feminist Quarterly and how do they relate to the idea of separate feminisms based on race/ethnicity and class as articulated by Separate Roads to Feminism?
+
+#Results:
+# - main clusters are in the middle - nothing drastically closer to the word "black" or "white" - seems to signal that if race is discussed, both represented here are discussed (potentially in comparison)
+# - clusters with higher cosine similarity to "black" : (rape, perceive, brownmiller - looser cluster); (beauty, describes, token, raped); (esteem?, rapist, confrontation?, woman, racial); (slave, women, races, mainly, minaory)
+# - cluster in the middle between "black" and "white" : (hence, economically, racism, slaves, man)
+# - clusters with higher cosine similarity to "white" : (status, superiority, mostly, poverty); (male, is, backgrounds, threatened, typical, workers, heterosexual, working); (blue, professional, supremacy, collar, class, lower, middle)
 
 model %>% closest_to(c("race", "ethnicity", "class"))
 model %>% closest_to("black")
@@ -185,6 +192,7 @@ plot(blackwhite, type = "n")
 text(blackwhite, labels = rownames(blackwhite))
 #seems like i'd need to use both singular and plurals of each to visualize better
 
+#PCA analysis
 race <- model[[c("black", "white"), average = F]]
 common_similarities_race <- model[1:3000, ] %>% cosineSimilarity(race)
 common_similarities_race[20:30, ]
@@ -192,7 +200,9 @@ high_similarities_race <- common_similarities_race[rank(-apply(common_similariti
 high_similarities_race %>%
     prcomp() %>%
     biplot(main = "50 words in a projection of black and white")
-#there are some interesting cluseters but i want to look closet at them/break apart to see what they're comprised of 
+#there are some interesting cluseters
+
+# --------------------------------------------------------------------------------
 
 #IDEA: pulling from previous methodological experiments, what is the difference between the early issues and late - associated words with sexuality and race?; first issue states purpose as seeking "in-depth feminist political analysis and ideological development" so what are the changes using political and ideological?, how does the ideal of liberation seem to change?
 #Question:
