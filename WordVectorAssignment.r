@@ -14,8 +14,7 @@
 library(wordVectors)
 library(tidyverse)
 library(ggplot2)
-install.packages("word2vec")
-library(word2vec)
+
 
 #create file and prep txt by taking every txt file from directory and compiling it into one massive file
 if(!file.exists("quest.txt")) prep_word2vec(origin = "questfiles", destination = "quest.txt", lowercase = T, bundle_ngrams = 1)
@@ -213,16 +212,35 @@ high_similarities_race %>%
 #first need to make models that filter to just the years I want
 # - from my files metadata - I know which files fall under the volumes: 1- (11, 12, 13, 14) and 5 - (51, 52, 53, 54)
 
-#create file and prep txt by taking every txt file from directory and compiling it into one massive file
+# - create new directories with just the files I want (NOTE - MOVES THEM OUT OF QUESTFILES, will mess up if try to run original models without reverting first)
+#vol 1
+if(!dir.exists("questvol1files")) {dir.create("questvol1files")}
+
 vol1files <- file.path("questfiles", c("questfeministqua11wash.txt", "questfeministqua12wash.txt", "questfeministqua13wash.txt", "questfeministqua14wash.txt"))
 
-if(!file.exists("questvol1.txt")) prep_word2vec(origin = c("questfiles/questfeministqua11wash.txt", "questfiles/questfeministqua12wash.txt", "questfiles/questfeministqua13wash.txt", "questfeministqua14wash.txt"), destination = "questvol1.txt", lowercase = TRUE, bundle_ngrams = 1)
+for (file in vol1files) { file.rename(file, file.path("questvol1files", basename(file)))}
 
-#output model as a file to computer - read prevents accidentally overwriting (if you need new file delete and rerun)
+if(!file.exists("questvol1.txt")) prep_word2vec(origin = "questvol1files", destination = "questvol1.txt", lowercase = TRUE, bundle_ngrams = 1)
+
 if (!file.exists("questvol1.bin")) {
-    model <- train_word2vec("questvol1.txt", "questvol1.bin", vectors = 150, threads = 3, window = 12, iter = 5, negative_samples = 0)   
+    vol1model <- train_word2vec("questvol1.txt", "questvol1.bin", vectors = 150, threads = 3, window = 12, iter = 5, negative_samples = 0)   
 } else {
-    model <- read.vectors("questvol1.bin")
+    vol1model <- read.vectors("questvol1.bin")
+}
+
+#vol 5
+if(!dir.exists("questvol5files")) {dir.create("questvol5files")}
+
+vol5files <- file.path("questfiles", c("questfeministqua51wash.txt", "questfeministqua52unse.txt", "questfeministqua53wash.txt", "questfeministqua54wash.txt"))
+
+for (file in vol5files) { file.rename(file, file.path("questvol5files", basename(file)))}
+
+if(!file.exists("questvol5.txt")) prep_word2vec(origin = "questvol5files", destination = "questvol5.txt", lowercase = TRUE, bundle_ngrams = 1)
+
+if (!file.exists("questvol5.bin")) {
+    vol5model <- train_word2vec("questvol5.txt", "questvol5.bin", vectors = 150, threads = 3, window = 12, iter = 5, negative_samples = 0)   
+} else {
+    vol5model <- read.vectors("questvol5.bin")
 }
 
 
