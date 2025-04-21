@@ -64,7 +64,7 @@ First we need to get a basemap. For this example we'll use the `map_data()` func
 
 (@) Look at the documentation for `map_data()`. Which geographies does this package provide access to?
 
->
+> The package provides access to US counties via census data, France and Italy via NUTS III of the UNEP (prepared around 1989 so somewhat out of date), New Zealand including 3 main islands and 19 smaller coastal islands, the US states via census data, the US mainland via census data, a world map (updated in 2013) imported from the public domain Natural Earth project, and an alternative version of the world map with the Pacific Ocean in the center of the map.
 
 Lets load the base map data for the US. 
 ```{r}
@@ -73,7 +73,7 @@ usa <- map_data("state")
 
 (@) `map_data()` generates a data frame. Take a look at this data frame, what types of data are included? 
 
-> 
+>  This data frame includes the longitude/latitudes and regional information that groups the US together via the states by breaking it into groups (alphabetical order of the states?) in order from what appears to be south to north.
 
 
 We can now pass this data to ggplot to create a simple basemap. When we wanted to create a bar plot using `ggplot()` we called `geom_bar`. When we wanted to create a line chart we used `geom_point()` and `geom_line()`. The sample principle applies here and `ggplot()` provides a geom for maps.
@@ -97,12 +97,23 @@ ggplot() +
 
 (@) This map looks slightly funny, but that is because the data includes entries outside of the contiguous United States. Try filtering out those entries and mapping this again. Can you change the color or size of the points? Can you add a title?
 ```{r}
+gayguides <- gayguides %>% filter(state != "HI")
 
+ggplot() +
+  geom_map(data = usa, map = usa, aes(long, lat, map_id = region), fill = "lightgray", color = "black") + geom_point(data = gayguides, mapping=aes(x=lon, y=lat), color = "blue", size = 3) + labs(title = "Locations listed in Bob Damron's Guides in 1965 (excluding HI)")
+#didn't need to filter out AK because AK was not in the data frame
 ```
 
 (@) Can you map just locations in South Carolina (on a basemap of SC)? 
 ```{r}
+SC65gayguides <- gayguides %>% filter(state == "SC")
+sc_state <- map_data("state") %>% filter(region == "south carolina")
+ggplot() +
+  geom_map(data = sc_state, map = sc_state, aes(long, lat, map_id = region), fill = "lightgray", color = "black") + geom_point(data = SC65gayguides, mapping = aes(x=lon, y=lat), color = "blue", size = 4) + labs(title = "Locations listed in SC in 1965")
 
+#all years
+data(gayguides)
+SCgayguides <- gayguides %>% filter(state == "SC")
 ```
 
 (@) Create a map that uses your geocoded data from the Boston Women Voters dataset. 
