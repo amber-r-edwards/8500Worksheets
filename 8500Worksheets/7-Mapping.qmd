@@ -1,7 +1,7 @@
 ---
 title: "Worksheet 7: Mapping"
-author: ""
-date: ""
+author: "Amber R. Edwards"
+date: "April 21, 2025"
 ---
 
 _This is the seventh in a series of worksheets for History 8500 at Clemson University. The goal of these worksheets is simple: practice, practice, practice. The worksheet introduces concepts and techniques and includes prompts for you to practice in this interactive document. When you are finished, you should change the author name (above), render your document to a pdf, and upload it to canvas. Don't forget to commit your changes as you go and push to github when you finish the worksheet._
@@ -16,6 +16,7 @@ library(tidyverse)
 library(DigitalMethodsData)
 library(ggmap)
 library(tidygeocoder)
+library(dplyr)
 ```
 
 ### Geocoding
@@ -37,13 +38,22 @@ Now we have latitude and longitude coordinates for our data.
 
 (@) Use this approach to geocode the `UndergroundRR` data. 
 ```{r}
-
+data("undergroundRR")
+underground.data.coordinates <- undergroundRR %>% geocode(city = City, state = State, method='osm', lat = latitude, long = longitude)
+head(underground.data.coordinates)
 ```
 
 
 (@) Geocode the Boston Women Voters dataset. Note that the data does include street addresses but because they are broken into parts - street address number, street, etc - you'll need to combine them into a full address to pass to the geocoding function. 
 ```{r}
 data("BostonWomenVoters")
+#BostonWomenVoters$Street.of.Residence.on.April.1 <- paste(BostonWomenVoters$Street.Number.on.April.1, BostonWomenVoters$Street.of.Residence.on.April.1, sep = " ")
+#did this first but didn't like that it kept the original columns
+
+BostonWomenVoters <- BostonWomenVoters %>%
+  mutate(Street.of.Residence.on.April.1 = paste(Street.Number.on.April.1, Street.of.Residence.on.April.1, sep = " ")) %>%
+  mutate(Street.Number.on.April.1 = NULL)
+
 ```
 
 ### Maps with `ggplot()`
