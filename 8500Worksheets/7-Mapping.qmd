@@ -54,6 +54,13 @@ BostonWomenVoters <- BostonWomenVoters %>%
   mutate(Street.of.Residence.on.April.1 = paste(Street.Number.on.April.1, Street.of.Residence.on.April.1, sep = " ")) %>%
   mutate(Street.Number.on.April.1 = NULL)
 
+
+bostonwomen.coordinates <- bostonwomentop150 %>% geocode(address = Street.of.Residence.on.April.1, method = 'osm', lat = latitude, long = longitude)
+#this is going to be really long - filtering to top 500 rows
+#bostonwomentop500 <- BostonWomenVoters %>% slice(1:500)
+#still too long - 150
+bostonwomentop150 <- BostonWomenVoters %>% slice(1:150)
+# didn't work - will circle back here
 ```
 
 ### Maps with `ggplot()`
@@ -114,6 +121,9 @@ ggplot() +
 #all years
 data(gayguides)
 SCgayguides <- gayguides %>% filter(state == "SC")
+ggplot() +
+  geom_map(data = sc_state, map = sc_state, aes(long, lat, map_id = region), fill = "lightgray", color = "black") + geom_point(data = SCgayguides, mapping = aes(x=lon, y=lat, color = Year), size = 4) + labs(title = "All Locations listed in SC - color by Year")
+#one outlier with coordinates outside SC
 ```
 
 (@) Create a map that uses your geocoded data from the Boston Women Voters dataset. 
