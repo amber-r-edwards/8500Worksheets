@@ -209,23 +209,39 @@ This is now much more readable but the numbers represented are simply the raw po
 
 (@) First, create a variable called total_male_pop, with the total foreign and native born male population by summing the variables AZF001 and AZF003. 
 ```{r}
-
+#total_male_pop <- sum(nhgis$AZF001, nhgis$AZF003, na.rm = TRUE)
+nhgis <- nhgis %>%
+  mutate(total_male_pop = AZF001 + AZF003)
 ```
 
 (@) Now, use the total_male_pop variable and create a variable for the the percentage of foreign born males.
 ```{r}
+#foreignpercentage <- (nhgis$AZF003 / total_male_pop) * 100 
+#gave me a bunch of numbers
+#total_foreign_male <- sum(nhgis$AZF003, na.rm = TRUE)
+#foreignpercentage <- (total_foreign_male / total_male_pop) * 100
+#14.53% of the total male population is foreign born
 
+nhgis <- nhgis %>%
+  mutate(foreignpercentage = ( AZF003 / total_male_pop) * 100 )
 ```
 
 (@) Now map your result. You'll want to replicate the code from the example above, but this time add another layer to the plot - a scale. Here we'll use this scale `scale_fill_continuous("", labels = scales::percent)`
 
 Before you write that code, look up the documentation for the above code (and look at the examples). What does it do? 
 
->
+>scale_fill_continuous() is the default color scale that ggplot2 uses when continuous data values are mapped into the fill aesthetic. The function takes the arguments of additional parameters passed on to the scale tpe which could be a gradient (default), "viridis," or a function that returns a continuous color scale. The scales :: percent function would be the function we're passing here - formats the numbers as percentages for the scale on the plot.
 
 Now create the map: 
 ```{r}
+#ggplot(data = nhgis, aes(fill = AZF001)) +
+#  geom_sf() + scale_fill_distiller(name="Foreign Born Males", palette = "Spectral" , breaks = pretty_breaks(n = 10)) +
+#  scale_fill_continuous("", labels = scales::percent)
 
+#i think i need my variables in the columns of nhgis so I can plot them this way
+
+ggplot(data = nhgis, aes(fill = foreignpercentage )) +
+  geom_sf() + scale_fill_continuous(name = "Percentage of Foreign Born Males", palette = "Spectral", breaks = pretty_breaks(n = 10)) + scale_fill_continuous("", labels = scales::percent)
 ```
 
 ### Leaflet
