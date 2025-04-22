@@ -60,7 +60,6 @@ bostonwomen.coordinates <- bostonwomentop150 %>% geocode(address = Street.of.Res
 #bostonwomentop500 <- BostonWomenVoters %>% slice(1:500)
 #still too long - 150
 bostonwomentop150 <- BostonWomenVoters %>% slice(1:150)
-# didn't work - will circle back here
 ```
 
 ### Maps with `ggplot()`
@@ -128,7 +127,9 @@ ggplot() +
 
 (@) Create a map that uses your geocoded data from the Boston Women Voters dataset. 
 ```{r}
-
+ggplot() +
+  geom_map(data = usa, map = usa, aes(long, lat, map_id = region), fill = "lightgray", color = "black") + geom_point(data = bostonwomen.coordinates, mapping = aes(x=longitude, y=latitude), color = "red", size = 3) + labs(title = "Top 150 entries in the Boston Women Voters Data")
+#there are some heavily wonky ones probably thrown off by it being street addresses in here
 ```
 
 Lets return to the recreational data for a minute.
@@ -155,8 +156,11 @@ ggplot() +
 ---
 
 ```{r}
+install.packages("readr")
 library(readr) #you may have to install it using `install.packages()`. 
+install.packages("sf")
 library(sf)
+install.packages("ipumsr")
 library(ipumsr) #you may need to install this. If you are on a mac, it may give you warnings. Try loading it to verify installation worked. 
 library(tidyverse)
 
@@ -191,7 +195,7 @@ ggplot(data = nhgis, aes(fill = AZF001)) +
 
 ```
 (@) In the code above, why filter out Hawaii and Alaska? Try commenting out that line and rerunning the code. What happens? Why might we want to do this? Why might we not want to do this? How does it shape the interpretation?
->
+>Filtering out Hawaii and Alaska helps with the frame size/dimensions, making it possible to see the counties of the continental US states that are indicated by the grids. Otherwise, the lines are too tight to get a sense of the color indicated from the gradient. In this case, the only states that have a lighter color are hidden from view without filtering out HI and AK.
 
 This is a great start. But using AZF001 (Native born males) as the fill does not create a useful visualization. It doesn't give us a sense of the proportion of that data. There are multiple problems with the map as it is, but one is that the color scale makes this incredibly hard to read. We can fix that by using a scale to break the values of AZF001 into bins and assign each a color. R has a function for this. It comes from the scales pacakge which you may need to install.
 
