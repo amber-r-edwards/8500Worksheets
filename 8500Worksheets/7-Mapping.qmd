@@ -368,6 +368,12 @@ usbritainparkssize <- usbritainparks %>%
 #knowing that the American parks were established more recently than Dr. Barzewski expected - is there a spatial element that adds additional questions? Where are the parks located that are established in the late 20th century? 
 #idea - ggplot maps, facet by decade
 
+usparks <- parks %>%
+  filter(country == "United States") %>%
+  mutate(decade = floor(year / 10) * 10) #wanted to just facet by decade within the plot code but that would not work - Copilot suggested preprocessing for reusability of code
 
+ggplot() + 
+  geom_map(data = usa, map = usa, aes(long, lat, map_id = region), fill = "lightgray", color = "black") + geom_point(data = usparks, mapping = aes(x=lon, y=lat), color = "red") + facet_wrap(~decade) + labs(title="National Parks Established in the US by Decade")
+#One peak in 1980 could be from Alaska - numerous additions there - as well as in the 1970s where there are a few added in the west/northern central part of the country. I would align the peak with the environmentalist movement (1970s onward) and look into these are what would make the parks "newer" than the UK - I'm unsure how this would align with Dr. Barczewski's research against other countries but focusing on environmentalist activism could provide a different angle to view new National Parks in the late 20th century.
 ```
 
