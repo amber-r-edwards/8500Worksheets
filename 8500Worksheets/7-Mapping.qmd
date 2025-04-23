@@ -346,6 +346,28 @@ briteuroparks <- briteuroparks %>%
 ggplot(briteuroparks, aes(x=year, y=count)) + facet_wrap(~european) + geom_line() + labs(x="Year", y="Number of National Parks Established", title = "Comparison of Number of National Parks Established in the United Kingdom vs Europe Over Time")
 #maybe not better - but does show the drastic difference - for her uses Dr. Barczewski would probably prefer that faceted by each country so she can isolate whichever visuzliation is most applicable to the countries she focuses on within Europe to compare with the UK
 
-#Comparison of American Parks as older, larger, and further from urban areas than 
+#Comparison of American Parks as older, larger, and further from urban areas than Britain
+#I'm wondering if this question (or many of her questions more generally) really need a map? One thing we focused on in Dr. Burd's Spatial History course is how mapping isn't always necessary and sometimes doesn't support the arguments we think it does if applied without considering how it furthers a spatial argument. Regardless, for this I'll find a reason to map it just to experiment with the tool.
+
+#older
+usbritainparks <- parks %>%
+  filter(country == "United States" | country == "United Kingdom")
+
+usbritainparkscount <- usbritainparks %>%
+  group_by(country, year) %>%
+  summarize(count = n())
+
+ggplot(usbritainparkscount, aes(x=year, y=count)) +facet_wrap(~country) + geom_line() + labs(x="Year", y="Number of National Parks Established", title="Comparison of Number of National parks Established in the US vs US Over Time")
+#This actually does not show what Dr. Barczewski expected - showing American parks as largely newer due to a spike in established parks around the 1980s-1990s (environmentalist movement probably). This vizualization could inform further research questions for her work.
+
+usbritainparkssize <- usbritainparks %>%
+  group_by(country) %>%
+  summarize(avgsize = mean(total_sq_kilometers , na.rm = TRUE))
+#unsure why this isn't working but only returning NA - will circle back
+
+#knowing that the American parks were established more recently than Dr. Barzewski expected - is there a spatial element that adds additional questions? Where are the parks located that are established in the late 20th century? 
+#idea - ggplot maps, facet by decade
+
+
 ```
 
