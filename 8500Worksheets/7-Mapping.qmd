@@ -127,9 +127,10 @@ ggplot() +
 
 (@) Create a map that uses your geocoded data from the Boston Women Voters dataset. 
 ```{r}
+mass <- map_data("county", "massachusetts")
 ggplot() +
   geom_map(data = usa, map = usa, aes(long, lat, map_id = region), fill = "lightgray", color = "black") + geom_point(data = bostonwomen.coordinates, mapping = aes(x=longitude, y=latitude), color = "red", size = 3) + labs(title = "Top 150 entries in the Boston Women Voters Data")
-#there are some heavily wonky ones probably thrown off by it being street addresses in here
+#there are some heavily wonky ones probably thrown off by it being street addresses in here?
 ```
 
 Lets return to the recreational data for a minute.
@@ -242,7 +243,7 @@ Now create the map:
 
 ggplot(data = nhgis, aes(fill = foreignpercentage )) +
   geom_sf() + scale_fill_continuous(name = "Percentage of Foreign Born Males", labels = scales::percent)
-  
+
 ```
 
 ### Leaflet
