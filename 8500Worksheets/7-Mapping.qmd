@@ -241,7 +241,8 @@ Now create the map:
 #i think i need my variables in the columns of nhgis so I can plot them this way
 
 ggplot(data = nhgis, aes(fill = foreignpercentage )) +
-  geom_sf() + scale_fill_distiller(name = "Percentage of Foreign Born Males", palette = "Spectral", breaks = pretty_breaks(n = 10)) + scale_fill_continuous("", labels = scales::percent)
+  geom_sf() + scale_fill_continuous(name = "Percentage of Foreign Born Males", labels = scales::percent)
+  
 ```
 
 ### Leaflet
