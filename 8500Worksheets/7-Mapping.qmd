@@ -250,6 +250,7 @@ In recent years Leaflet has become the most popular open source Javascript libra
 
 Like `ggplot()` it works by layering information on top of a basemap. You begin by loading the library and invoking leaflet. 
 ```{r}
+install.packages("leaflet")
 library(leaflet)
 my.map <- leaflet()
 my.map
@@ -271,12 +272,36 @@ leaflet(data=rec.data.coordinates) %>% addTiles() %>% addMarkers(~longitude, ~la
 
 (@) Use leaflet to map a dataset of your choice: 
 ```{r}
+#pulling my Joplin concert attribute tables from 8540 
+joplinallyears <- read.csv("JoplinAYLL.csv", fileEncoding = "UTF-8")
 
+joplin.map <- leaflet(data = joplinallyears) %>% addTiles() %>% addMarkers(~LONGITUDE, ~LATITUDE, popup = paste("Janis Joplin Concert at", joplinallyears$VENUE.NAME, "on", joplinallyears$DATE, sep = " "))
+
+joplin.map
+#a lot of markers missing for all years but did correctly do the ones it did
+#that's because the file doesn't have all of them for some reason?
+
+joplin66 <- read.csv("Joplin1966LL.csv")
+joplin66 <- joplin66 %>%
+  rename(
+    DATE = Date,
+    LATITUDE = Latitude,
+    LONGITUDE = Longitude,
+    VENUE.NAME = Venue
+  )
+#fighting with me for no reason - will circle back here
+joplin67 <- read.csv("Joplin1967LL.csv")
+joplin68 <- read.csv("Joplin1968LL.csv")
+joplin69 <- read.csv("Joplin1969LL.csv")
+joplin70 <- read.csv("Joplin1970LL.csv")
+
+joplinallyears <- bind_rows(joplin66, joplin67, joplin68, joplin69, joplin70)
+#WHY DID I ONLY USE ALL CAPS FOR ONE CSV THAT IS SO DUMB
 ```
 
 (@) Explain what choices you made in building this map? Why might you use leaflet over ggplot? When would ggplot be more desirable? 
 
->
+> I chose this dataset because I previously used these CSV files to make a map in ArcGIS - I have a file for all years combined but in ArcGIS I used separate CSV files by year to make layers. This would have been a much quicker process in R as I went through and individually geocoded each venue myself through Google to get the coordinates for each venue. I thought this data would work well with leaflet because there are a lot of overlapping concerts in the San Francisco area that are difficult to see in ArcGIS and I felt would similarly be difficult on ggplot. Since you can hover over the markers, I thought this would make for a more use friendly experience of this data. Alternatively, ggplot may be more desireable if I were to want to use the jiggler(?) function to break apart the overlapping points - and if I could get all of the years to work I would test it, but I'm unsure if Leafleat will allow me to change the colors of the markers to indicate year or not which I know ggplot does.
 
 
 ### Exercises
