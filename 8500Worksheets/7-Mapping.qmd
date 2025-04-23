@@ -282,23 +282,30 @@ joplin.map <- leaflet(data = joplinallyears) %>% addTiles() %>% addMarkers(~LONG
 joplin.map
 #a lot of markers missing for all years but did correctly do the ones it did
 #that's because the file doesn't have all of them for some reason?
-
-joplin66 <- read.csv("Joplin1966LL.csv")
+library(tidyverse)
+library(dplyr)
+joplin66 <- read.csv("Joplin1966LL.csv", fileEncoding = "UTF-8")
 joplin66 <- joplin66 %>%
   rename(
-    DATE = Date,
-    LATITUDE = Latitude,
-    LONGITUDE = Longitude,
-    VENUE.NAME = Venue
+    Date = DATE,
+    Latitude = LATITUDE,
+    Longitude = LONGITUDE,
+    Venue = VENUE.NAME
   )
 #fighting with me for no reason - will circle back here
-joplin67 <- read.csv("Joplin1967LL.csv")
-joplin68 <- read.csv("Joplin1968LL.csv")
-joplin69 <- read.csv("Joplin1969LL.csv")
-joplin70 <- read.csv("Joplin1970LL.csv")
+joplin67 <- read.csv("Joplin1967LL.csv", fileEncoding = "UTF-8")
+joplin68 <- read.csv("Joplin1968LL.csv", fileEncoding = "UTF-8")
+joplin69 <- read.csv("Joplin1969LL.csv", fileEncoding = "UTF-8")
+joplin70 <- read.csv("Joplin1970LL.csv", fileEncoding = "UTF-8")
 
 joplinallyears <- bind_rows(joplin66, joplin67, joplin68, joplin69, joplin70)
-#WHY DID I ONLY USE ALL CAPS FOR ONE CSV THAT IS SO DUMB
+#WHY DID I ONLY USE ALL CAPS FOR ONE CSV THAT IS SO DUMB - fixed it
+
+joplin.map <- leaflet(data = joplinallyears) %>% addTiles() %>% addMarkers(~Longitude, ~Latitude, popup = paste("Janis Joplin Concert at", joplinallyears$Venue, "on", joplinallyears$date, sep = " "))
+
+joplin.map
+#some still missing but much closer to complete - I'm assuming because of the fileEncoding and my manual geocoding throwing things off
+#would have to re-geocode to fix
 ```
 
 (@) Explain what choices you made in building this map? Why might you use leaflet over ggplot? When would ggplot be more desirable? 
